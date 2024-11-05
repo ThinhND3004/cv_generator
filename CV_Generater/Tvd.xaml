@@ -74,8 +74,9 @@
                         <TextBox x:Name="DegreeYearsTextBox" Visibility="Collapsed" LostFocus="DegreeYearsTextBox_LostFocus"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel>
-                    <Button Content="Generate to PDF" Width="120" Click="GenerateToPdf_Click"/>
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="0 50 10 0">
+                    <Button Content="Generate to PDF" Width="120" Click="GenerateToPdf_Click" Margin="0 0 10 0"/>
+                    <Button Content="Generate to Docs" Width="120"/>
                 </StackPanel>
             </StackPanel>
 
