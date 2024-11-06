@@ -11,7 +11,7 @@
 
     <Window.Resources>
         <SolidColorBrush x:Key="ThemeColorBrush" Color="YellowGreen"/>
-
+        
         <Style x:Key="TitleTextBlock" TargetType="TextBlock">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -23,6 +23,38 @@
             <Setter Property="BorderThickness" Value="0,0,0,1"/>
             <Setter Property="Margin" Value="0,0,0,5"/>
         </Style>
+
+
+        <ControlTemplate x:Key="EditableTextTemplate" TargetType="ContentControl">
+            <Grid>
+                <!-- Display mode with TextBlock -->
+                <TextBlock x:Name="DisplayTextBlock"
+                       Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                       Visibility="Visible"
+                       MouseDown="DisplayTextBlock_MouseDown"/>
+
+                <!-- Edit mode with TextBox -->
+                <TextBox x:Name="EditTextBox"
+                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                     Visibility="Collapsed"
+                     LostFocus="EditTextBox_LostFocus"
+                     KeyDown="EditTextBox_KeyDown"/>
+            </Grid>
+
+            <ControlTemplate.Triggers>
+                <!-- Trigger to switch from TextBlock to TextBox on double-click -->
+                <Trigger SourceName="DisplayTextBlock" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="EditTextBox" Property="Visibility" Value="Visible"/>
+                    <Setter TargetName="DisplayTextBlock" Property="Visibility" Value="Collapsed"/>
+                </Trigger>
+                <!-- Switch back to TextBlock when editing is finished -->
+                <Trigger SourceName="EditTextBox" Property="IsFocused" Value="False">
+                    <Setter TargetName="EditTextBox" Property="Visibility" Value="Collapsed"/>
+                    <Setter TargetName="DisplayTextBlock" Property="Visibility" Value="Visible"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
     </Window.Resources>
     <Grid Background="WhiteSmoke">
         <Grid.RowDefinitions>
@@ -240,8 +272,10 @@
 
                 <!-- Sections -->
                 <StackPanel Margin="15,20,15,10">
-                    
                     <!-- Objective Section -->
+                    <ContentControl Content="Your editable text here"
+                Template="{StaticResource EditableTextTemplate}"/>
+                    
                     <Border x:Name="ObjectiveBorder" Margin="0,10,0,10">
                         <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
                             <Grid.RowDefinitions>

@@ -96,8 +96,13 @@ namespace Template
             // Update the circle color when a new color is selected
             if (e.NewValue.HasValue)
             {
-                var brush = (SolidColorBrush) this.Resources["ThemeColorBrush"];
-                brush.Color = e.NewValue.Value;
+                // Clone the existing brush to modify it
+                var originalBrush = (SolidColorBrush)this.Resources["ThemeColorBrush"];
+                var clonedBrush = originalBrush.Clone();
+                clonedBrush.Color = e.NewValue.Value;
+
+                // Replace the frozen brush in the resources with the cloned brush
+                this.Resources["ThemeColorBrush"] = clonedBrush;
             }
         
         }
@@ -302,5 +307,56 @@ namespace Template
 
             return newSection;
         }
+
+        //---------------------------------------------------------------
+        //Edit text block
+        private void DisplayTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ClickCount == 2)
+            {
+                var textBlock = sender as TextBlock;
+                var parent = textBlock?.TemplatedParent as ContentControl;
+                var editTextBox = (TextBox)parent.Template.FindName("EditTextBox", parent);
+
+                if (editTextBox != null)
+                {
+                    editTextBox.Visibility = Visibility.Visible;
+                    textBlock.Visibility = Visibility.Collapsed;
+                    editTextBox.Focus();
+                    editTextBox.SelectAll();
+                }
+            }
+        }
+
+        private void EditTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var parent = textBox?.TemplatedParent as ContentControl;
+            var displayTextBlock = (TextBlock)parent.Template.FindName("DisplayTextBlock", parent);
+
+            if (displayTextBlock != null)
+            {
+                displayTextBlock.Visibility = Visibility.Visible;
+                textBox.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void EditTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var textBox = sender as TextBox;
+                var parent = textBox?.TemplatedParent as ContentControl;
+                var displayTextBlock = (TextBlock)parent.Template.FindName("DisplayTextBlock", parent);
+
+                if (displayTextBlock != null)
+                {
+                    displayTextBlock.Visibility = Visibility.Visible;
+                    textBox.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+
     }
 }
