@@ -483,7 +483,7 @@ namespace CV_Generater
             {
                 Text = "Click to edit",
                 FontWeight = FontWeights.Bold,
-                FontSize = 20,
+                FontSize = 16,
                 VerticalAlignment = VerticalAlignment.Center
             };
 
