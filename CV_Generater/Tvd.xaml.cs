@@ -194,39 +194,58 @@ namespace CV_Generater
 
 
             PdfDocument document = new PdfDocument();
-            document.Info.Title = "Generated CV";
-
-
+            document.Info.Title = "CV Document";
             PdfPage page = document.AddPage();
             XGraphics gfx = XGraphics.FromPdfPage(page);
+            XFont titleFont = new XFont("Arial", 20, XFontStyle.Bold);
+            XFont subtitleFont = new XFont("Arial", 16, XFontStyle.Bold);
+            XFont normalFont = new XFont("Arial", 12, XFontStyle.Regular);
+            XBrush brush = XBrushes.White;
 
 
-            XFont titleFont = new XFont("Verdana", 20, XFontStyle.Bold);
-            XFont headerFont = new XFont("Verdana", 14, XFontStyle.Bold);
-            XFont bodyFont = new XFont("Verdana", 12, XFontStyle.Regular);
+            
 
+            // Set background color
+            gfx.DrawRectangle(new XSolidBrush(XColor.FromArgb(0x2D, 0x3E, 0x50)), 0, 0, page.Width / 3, page.Height);
+            int x = 200;
+            int y = 20;
+            if (ProfileImage.Source is BitmapImage bitmapImage)
+            {
+                MemoryStream ms = new MemoryStream();
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+                encoder.Save(ms);
+                ms.Position = 0;
 
-            gfx.DrawString("CV", titleFont, XBrushes.Black, new XRect(0, 0, page.Width, 0), XStringFormats.TopCenter);
+                // Load the image to PdfSharp XImage
+                XImage xImage = XImage.FromStream(() => ms);
 
-            // Personal Information
-            gfx.DrawString("Personal Information", headerFont, XBrushes.Black, new XRect(40, 80, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Name: {PersonalInfoLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 110, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Position: {PositionLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 130, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Email: {EmailLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 150, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Phone: {PhoneLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 170, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Address: {AddressLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 190, page.Width, 0), XStringFormats.TopLeft);
+                // Draw Profile Image in the PDF
+                gfx.DrawImage(xImage, 25, 40, 150, 150); // Position and size (x, y, width, height)
+            }
+            else
+            {
+                MessageBox.Show("KHONG CO HINH ANH", "LOI ROI THANG NGU", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            // Profile Section
+            gfx.DrawString("Personal Details", titleFont, brush, new XPoint(y, 30 + x));
+            gfx.DrawString(PersonalInfoLabel.Text, subtitleFont, brush, new XPoint(y, 70 + x));
+            gfx.DrawString(PositionLabel.Text, subtitleFont, brush, new XPoint(y, 100 + x));
+            gfx.DrawString(EmailLabel.Text, normalFont, brush, new XPoint(y, 130 + x));
+            gfx.DrawString(PhoneLabel.Text, normalFont, brush, new XPoint(y, 160 + x));
+            gfx.DrawString(AddressLabel.Text, normalFont, brush, new XPoint(y, 190 + x));
 
-            // Professional Experience
-            gfx.DrawString("Professional Experience", headerFont, XBrushes.Black, new XRect(40, 230, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Company: {CompanyNameLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 260, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Position: {PositionLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 280, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Years: {YearsLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 300, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Description: {DescriptionLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 320, page.Width, 0), XStringFormats.TopLeft);
+            // Experience Section
+            gfx.DrawString("Professional Experience", titleFont, XBrushes.Black, new XPoint(200, 40));
+            gfx.DrawString(CompanyNameLabel.Text, subtitleFont, XBrushes.Black, new XPoint(200, 70));
+            gfx.DrawString(YearsLabel.Text, normalFont, XBrushes.Black, new XPoint(200, 100));
+            gfx.DrawString(DescriptionLabel.Text, normalFont, XBrushes.Black, new XPoint(200, 130));
 
-            // Education
-            gfx.DrawString("Education", headerFont, XBrushes.Black, new XRect(40, 360, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Degree: {DegreeLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 390, page.Width, 0), XStringFormats.TopLeft);
-            gfx.DrawString($"Years: {DegreeYearsLabel.Text}", bodyFont, XBrushes.Black, new XRect(40, 410, page.Width, 0), XStringFormats.TopLeft);
+            // Education Section
+            gfx.DrawString("Education", titleFont, XBrushes.Black, new XPoint(200, 180));
+            gfx.DrawString(DegreeLabel.Text, subtitleFont, XBrushes.Black, new XPoint(200, 210));
+            gfx.DrawString(DegreeYearsLabel.Text, normalFont, XBrushes.Black, new XPoint(200, 240));
+
 
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
