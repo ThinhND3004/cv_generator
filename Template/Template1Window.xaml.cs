@@ -191,7 +191,7 @@ namespace Template
         {
             // Show the edit button and set the border color
             UploadAvatarButton.Visibility = Visibility.Visible;
-            AvatarBorder.BorderBrush = Brushes.Green;
+            AvatarBorder.BorderBrush = ColorEllipse.Fill;
         }
 
         private void AvatarBorder_MouseLeave(object sender, MouseEventArgs e)
@@ -216,12 +216,34 @@ namespace Template
         }
         //////////////////////////////////////////////
 
+        private T FindChildByUid<T>(DependencyObject parent, string uid) where T : FrameworkElement
+        {
+            if (parent == null) return null;
+
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T typedChild && typedChild.Uid == uid)
+                {
+                    return typedChild;
+                }
+
+                var result = FindChildByUid<T>(child, uid);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
         private void Section_MouseEnter(object sender, MouseEventArgs e)
         {
             // Hiển thị nút "Add Section" khi di chuột vào vùng Grid
             if (sender is Grid grid)
             {
-                var addButton = grid.FindName("AddSectionButton") as Button;
+                var addButton = FindChildByUid<Button>(grid, "AddSectionButton");
                 if (addButton != null)
                 {
                     addButton.Visibility = Visibility.Visible;
@@ -234,7 +256,7 @@ namespace Template
             // Ẩn nút "Add Section" khi chuột rời khỏi vùng Grid hoàn toàn
             if (sender is Grid grid)
             {
-                var addButton = grid.FindName("AddSectionButton") as Button;
+                var addButton = FindChildByUid<Button>(grid, "AddSectionButton");
                 if (addButton != null && !addButton.IsMouseOver)
                 {
                     addButton.Visibility = Visibility.Collapsed;
@@ -244,69 +266,96 @@ namespace Template
 
         private void AddSectionButton_Click(object sender, RoutedEventArgs e)
         {
-            // Thêm một section mới dưới section hiện tại
+            // Add a new section below the current section
             if (sender is Button addButton)
             {
-                var parentStackPanel = addButton.Parent as StackPanel;
-                if (parentStackPanel != null)
+                var grid = addButton.Parent as Grid;
+                if (grid != null)
                 {
-                    var newSection = CreateNewSection();
-                    System.Windows.MessageBox.Show("Add new section here");
-                    var mainContainer = ContentScrollViewer.Content as StackPanel;
-                    if (mainContainer != null)
+                    var parentStackPanel = grid.Parent as StackPanel;
+                    if (parentStackPanel != null)
                     {
-                        int index = mainContainer.Children.IndexOf(parentStackPanel);
-                        mainContainer.Children.Insert(index + 1, newSection);
+                        var newSection = CreateNewSection();
+                        if (newSection != null)
+                        {
+                            System.Windows.MessageBox.Show("Add new section here");
+                            
+                                int index = BodyCVStackPanel.Children.IndexOf(parentStackPanel);
+                            BodyCVStackPanel.Children.Insert(index + 1, newSection);
+                                System.Windows.MessageBox.Show("Index: " + index);
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("New Section create fail");
+                        }
+                    }
+                    else
+                    {
+                        System.Windows.MessageBox.Show("StackPanel is not a Exist");
                     }
                 }
+                else
+                {
+                    System.Windows.MessageBox.Show("Gird is not a Exist");
+                }
+            }
+            else
+            {
+                System.Windows.MessageBox.Show("Sender is not a button");
             }
         }
 
+
         private StackPanel CreateNewSection()
         {
-            var newSection = new StackPanel
+            // Create the outer StackPanel
+            var sectionPanel = new StackPanel { Margin = new Thickness(0, 10, 0, 10) };
+
+            // Create the Grid
+            var grid = new Grid();
+            grid.MouseEnter += Section_MouseEnter;
+            grid.MouseLeave += Section_MouseLeave;
+
+            // Define the RowDefinitions for the Grid
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            // Create and configure the first TextBox (for title)
+            var titleTextBox = new TextBox
             {
-                Margin = new Thickness(15, 20, 15, 10)
+                Text = "ADDITIONAL INFORMATION",
+                Style = (Style)FindResource("TitleTextBox")
             };
+            Grid.SetRow(titleTextBox, 0);
+            grid.Children.Add(titleTextBox);
 
-            var border = new Border
+            // Create and configure the second TextBox (for additional information)
+            var infoTextBox = new TextBox
             {
-                BorderBrush = System.Windows.Media.Brushes.Green,
-                BorderThickness = new Thickness(0, 0, 0, 1),
-                Margin = new Thickness(0, 0, 0, 5)
+                Text = "Fill in additional information",
+                Margin = new Thickness(0, 5, 0, 0)
             };
+            Grid.SetRow(infoTextBox, 1);
+            grid.Children.Add(infoTextBox);
 
-            var textBlock = new TextBlock
-            {
-                Text = "NEW SECTION",
-                FontSize = 16,
-                FontWeight = FontWeights.Bold,
-                Foreground = System.Windows.Media.Brushes.Green,
-                Margin = new Thickness(0, 20, 0, 0)
-            };
-
-            border.Child = textBlock;
-            newSection.Children.Add(border);
-
-            // Tạo nút "Add Section" cho section mới
-            var addSectionButton = new Button
+            // Create and configure the Button
+            var addButton = new Button
             {
                 Content = "+ Add Section",
-                Width = 120,
-                Height = 35,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(0, 10, 0, 0),
-                Background = System.Windows.Media.Brushes.Green,
-                Foreground = System.Windows.Media.Brushes.White,
-                FontSize = 14,
-                FontWeight = FontWeights.Bold,
-                Visibility = Visibility.Collapsed
+                Style = (Style)FindResource("AddSectionButtonStyle"),
+                Uid = "AddSectionButton"
             };
-            addSectionButton.Click += AddSectionButton_Click;
-            newSection.Children.Add(addSectionButton);
+            addButton.Click += AddSectionButton_Click;
+            Grid.SetRow(addButton, 2);
+            grid.Children.Add(addButton);
 
-            return newSection;
+            // Add the Grid to the StackPanel
+            sectionPanel.Children.Add(grid);
+
+            return sectionPanel;
         }
+
 
         //---------------------------------------------------------------
         //Edit text block
@@ -356,7 +405,5 @@ namespace Template
                 }
             }
         }
-
-
     }
 }

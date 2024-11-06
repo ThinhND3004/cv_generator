@@ -11,49 +11,128 @@
 
     <Window.Resources>
         <SolidColorBrush x:Key="ThemeColorBrush" Color="YellowGreen"/>
-        
-        <Style x:Key="TitleTextBlock" TargetType="TextBlock">
+
+        <!--TextBoxTitle-->
+        <Style TargetType="TextBox" x:Key="TitleTextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeColorBrush}"/>
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="{DynamicResource ThemeColorBrush}"/>
-            <Setter Property="Margin" Value="0,20,0,0"/>
-        </Style>
-        <Style TargetType="Border" x:Key="TitleTextBlockBorder">
+            <Setter Property="BorderThickness" Value="0,0,0,1.5"/>
             <Setter Property="BorderBrush" Value="{DynamicResource ThemeColorBrush}"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Margin" Value="0,20,0,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="2">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeColorBrush}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="0.5 0.5 0.5 1.5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
+        <!--Style for edit textbox-->
+        <Style TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="Gray"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
 
-        <ControlTemplate x:Key="EditableTextTemplate" TargetType="ContentControl">
-            <Grid>
-                <!-- Display mode with TextBlock -->
-                <TextBlock x:Name="DisplayTextBlock"
-                       Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                       Visibility="Visible"
-                       MouseDown="DisplayTextBlock_MouseDown"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="2">
+                            <ScrollViewer x:Name="PART_ContentHost"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Trigger for hover effect -->
+                            <Trigger Property="IsMouseOver" Value="False">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="Transparent"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource ThemeColorBrush}"/>
+                                <Setter TargetName="Border" Property="BorderThickness" Value="0.5"/>
+                            </Trigger>
 
-                <!-- Edit mode with TextBox -->
-                <TextBox x:Name="EditTextBox"
-                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                     Visibility="Collapsed"
-                     LostFocus="EditTextBox_LostFocus"
-                     KeyDown="EditTextBox_KeyDown"/>
-            </Grid>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <ControlTemplate.Triggers>
-                <!-- Trigger to switch from TextBlock to TextBox on double-click -->
-                <Trigger SourceName="DisplayTextBlock" Property="IsMouseOver" Value="True">
-                    <Setter TargetName="EditTextBox" Property="Visibility" Value="Visible"/>
-                    <Setter TargetName="DisplayTextBlock" Property="Visibility" Value="Collapsed"/>
-                </Trigger>
-                <!-- Switch back to TextBlock when editing is finished -->
-                <Trigger SourceName="EditTextBox" Property="IsFocused" Value="False">
-                    <Setter TargetName="EditTextBox" Property="Visibility" Value="Collapsed"/>
-                    <Setter TargetName="DisplayTextBlock" Property="Visibility" Value="Visible"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
+        <Style x:Key="AddSectionButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Background" Value="{DynamicResource ThemeColorBrush}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Visibility" Value="Collapsed"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!--<DataTemplate x:Key="AdditionalInformationDataTemplate">
+            <StackPanel Margin="0,10,0,10">
+                <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    --><!-- Objective Section --><!--
+
+                    <TextBox Style="{DynamicResource TitleTextBox}" Text="ADDITIONAL INFORMATION"/>
+
+                    <TextBox Grid.Row="1" Text="Fill in additional information" Margin="0,5,0,0"/>
+
+                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                </Grid>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="SubInformationDataTemplate">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="1*"/>
+
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="0,10,0,0">
+                        <TextBox Text="Position" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                        <TextBox Text="From - To"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="0,10,0,0">
+                        <TextBox Text="Organization Name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                        <TextBox Text="Activity description"/>
+                    </StackPanel>
+                </Grid>
+                <Button x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+            </StackPanel>
+        </DataTemplate>-->
 
     </Window.Resources>
     <Grid Background="WhiteSmoke">
@@ -65,7 +144,7 @@
         </Grid.RowDefinitions>
 
         <!-- Transparent Overlay for Click Outside Detection -->
-        <Border Background="#01000000" 
+        <Border Background="Transparent" 
                 Visibility="Collapsed" 
                 Name="Overlay"
                 Grid.RowSpan="2" 
@@ -109,12 +188,11 @@
             <!-- Button to Select Background Image -->
             <Button Content="CV Background" Width="100" Margin="5" Style="{StaticResource HeaderButton}" x:Name="BackgroundButton" Click="BackgroundButton_Click"/>
             <!-- Popup for Background Image Selection -->
-            <Popup x:Name="BackgroundPopup" PlacementTarget="{Binding ElementName=BackgroundButton}" 
-           Placement="Bottom" AllowsTransparency="True">
+            <Popup x:Name="BackgroundPopup" PlacementTarget="{Binding ElementName=BackgroundButton}" Placement="Bottom" AllowsTransparency="True">
                 <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="10">
                     <StackPanel>
                         <TextBlock Text="Choose a background" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-                        <WrapPanel x:Name="ImageSelectionPanel" Width="300" ItemWidth="90" ItemHeight="90" Orientation="Horizontal"/>
+                        <WrapPanel x:Name="ImageSelectionPanel" Width="300" ItemWidth="90" ItemHeight="90" Orientation="Horizontal" Cursor="Hand"/>
                     </StackPanel>
                 </Border>
             </Popup>
@@ -179,8 +257,8 @@
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="Vu Hoang Hieu Ngan (K18 HCM)" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}" TextWrapping="Wrap"/>
-                                <TextBlock Grid.Column="1" x:Name="JobPositionTextBlock" Text="Job Position" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                                <TextBox Grid.Column="0" Text="Vu Hoang Hieu Ngan (K18 HCM)" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}" TextWrapping="Wrap"/>
+                                <TextBox Grid.Column="1" x:Name="JobPositionTextBox" Text="Job Position" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                             </Grid>
                         </Border>
 
@@ -199,7 +277,7 @@
                                         <TextBlock Text="📅" Foreground="Black" FontSize="12"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock x:Name="DateTextBlock" Text="DD/MM/YY  " Foreground="Gray" FontSize="12"/>
+                                        <TextBox x:Name="DateTextBoxk" Text="DD/MM/YY  " Foreground="Gray" FontSize="12"/>
                                     </StackPanel>
                                 </Grid>
                                 <Grid Margin="0 0 0 10">
@@ -211,7 +289,7 @@
                                         <TextBlock Text="📞" Foreground="Black" FontSize="12"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock x:Name="PhoneTextBlock" Text="0123 456 789  " Foreground="Gray" FontSize="12"/>
+                                        <TextBox x:Name="PhoneTextBox" Text="0123 456 789  " Foreground="Gray" FontSize="12"/>
                                     </StackPanel>
                                 </Grid>
                                 <Grid Margin="0 0 0 10">
@@ -223,7 +301,7 @@
                                         <TextBlock Text="📍" Foreground="Black" FontSize="12"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock x:Name="AddressTextBlock" Text="Address" Foreground="Gray" FontSize="12"/>
+                                        <TextBox x:Name="AddressTextBox" Text="Address" Foreground="Gray" FontSize="12"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
@@ -237,7 +315,7 @@
                                         <TextBlock Text="👤" Foreground="Black" FontSize="12" FontWeight="ExtraBold"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock x:Name="GenderTextBlock" Text="Male/Female" Foreground="Gray" FontSize="12"/>
+                                        <TextBox x:Name="GenderTextBox" Text="Male/Female" Foreground="Gray" FontSize="12"/>
                                     </StackPanel>
                                 </Grid>
                                 <Grid Margin="0 0 0 10">
@@ -249,7 +327,7 @@
                                         <TextBlock Text="✉️" Foreground="Black" FontSize="12"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock x:Name="EmailTextBlock" Text="0123 456 789  " Foreground="Gray" FontSize="12"/>
+                                        <TextBox x:Name="EmailTextBox" Text="0123 456 789  " Foreground="Gray" FontSize="12"/>
                                     </StackPanel>
                                 </Grid>
                                 <Grid Margin="0 0 0 10">
@@ -261,7 +339,7 @@
                                         <TextBlock Text="🔗" Foreground="Black" FontSize="12"/>
                                     </StackPanel>
                                     <StackPanel Grid.Column="1">
-                                        <TextBlock x:Name="WebsiteTextBlock" Text="Address" Foreground="Gray" FontSize="12"/>
+                                        <TextBox x:Name="WebsiteTextBox" Text="Address" Foreground="Gray" FontSize="12"/>
                                     </StackPanel>
                                 </Grid>
                             </StackPanel>
@@ -271,12 +349,9 @@
                 </Grid>
 
                 <!-- Sections -->
-                <StackPanel Margin="15,20,15,10">
-                    <!-- Objective Section -->
-                    <ContentControl Content="Your editable text here"
-                Template="{StaticResource EditableTextTemplate}"/>
-                    
-                    <Border x:Name="ObjectiveBorder" Margin="0,10,0,10">
+                <StackPanel Margin="15,20,15,10" x:Name="BodyCVStackPanel">
+
+                    <StackPanel Margin="0,10,0,10">
                         <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
@@ -284,13 +359,13 @@
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <!-- Objective Section -->
-                            <Border Style="{DynamicResource TitleTextBlockBorder}">
-                                <TextBlock Style="{DynamicResource TitleTextBlock}">OBJECTIVE</TextBlock>
-                            </Border>
-                            <TextBlock Grid.Row="1" x:Name="ObjectiveContentTextBlock" Text="Career goals: short-term, long-term." FontSize="12" Foreground="Gray" Margin="0,5,0,0"/>
+                            
+                            <TextBox Style="{DynamicResource TitleTextBox}" Text="OBJECTIVE"/>
+                            
+                            <TextBox Grid.Row="1" x:Name="ObjectiveContentTextBlock" Text="Career goals: short-term, long-term." Margin="0,5,0,0"/>
 
                             <!-- Add Section Button, initially hidden -->
-                            <Button Grid.Row="2" x:Name="AddSectionButton" Content="+ Add Section" Width="120" Height="35" HorizontalAlignment="Center" Click="AddSectionButton_Click" Background="{DynamicResource ThemeColorBrush}" Foreground="White" FontSize="14" FontWeight="Bold" Panel.ZIndex="100" Visibility="Collapsed">
+                            <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Width="120" Height="35" HorizontalAlignment="Center" Cursor="Hand" Click="AddSectionButton_Click" IsEnabled="True" Background="{DynamicResource ThemeColorBrush}" Foreground="White" FontSize="14" FontWeight="Bold" Panel.ZIndex="100" Visibility="Collapsed">
                                 <Button.Template>
                                     <ControlTemplate TargetType="Button">
                                         <Border Background="{TemplateBinding Background}" 
@@ -303,34 +378,37 @@
                                 </Button.Template>
                             </Button>
                         </Grid>
-                    </Border>
+                    
+                    </StackPanel>
                     <!-- Education Section -->
                     <StackPanel Margin="0,10,0,10">
-                        <Border Style="{DynamicResource TitleTextBlockBorder}">
-                            <TextBlock Style="{DynamicResource TitleTextBlock}">EDUCATION</TextBlock>
-                        </Border>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="1*"/>
+                        
+                            <TextBox Style="{DynamicResource TitleTextBox}" Text="EDUCATION"/>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="1*"/>
 
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Margin="0,10,0,0">
-                                <TextBlock Text="Courses / Subjects" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                <TextBlock Text="From - To" FontSize="12" Foreground="Gray"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Margin="0,10,0,0">
-                                <TextBlock Text="School name" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                <TextBlock Text="Education description" FontSize="12" Foreground="Gray"/>
-                            </StackPanel>
-                        </Grid>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,10,0,0">
+                                    <TextBox Text="Courses / Subjects" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                    <TextBox Text="From - To"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="0,10,0,0">
+                                    <TextBox Text="School name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                    <TextBox Text="Education description"/>
+                                </StackPanel>
+                                <!--Add Item Button here-->
+                            </Grid>
+                        </StackPanel>
                     </StackPanel>
 
                     <!--Work experience-->
                     <StackPanel Margin="0,10,0,10">
-                        <Border Style="{DynamicResource TitleTextBlockBorder}">
-                            <TextBlock Style="{DynamicResource TitleTextBlock}">WORK EXPERIENCE</TextBlock>
-                        </Border>
+                        
+                            <TextBox Style="{DynamicResource TitleTextBox}" Text="WORK EXPERIENCE"/>
+                        
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="200"/>
@@ -338,36 +416,38 @@
 
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="0,10,0,0">
-                                <TextBlock Text="Position" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                <TextBlock Text="From - To" FontSize="12" Foreground="Gray"/>
+                                <TextBox Text="Position" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                <TextBox Text="From - To"/>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Margin="0,10,0,0">
-                                <TextBlock Text="Company name" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                <TextBlock Text="Experience description" FontSize="12" Foreground="Gray"/>
+                                <TextBox Text="Company name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                <TextBox Text="Experience description"/>
                             </StackPanel>
                         </Grid>
                     </StackPanel>
 
                     <!--Activities-->
                     <StackPanel Margin="0,10,0,10">
-                        <Border Style="{DynamicResource TitleTextBlockBorder}">
-                            <TextBlock Style="{DynamicResource TitleTextBlock}">ACTIVITIES</TextBlock>
-                        </Border>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
-                                <ColumnDefinition Width="1*"/>
+                        
+                            <TextBox Style="{DynamicResource TitleTextBox}" Text="ACTIVITIES"/>
 
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Margin="0,10,0,0">
-                                <TextBlock Text="Position" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                <TextBlock Text="From - To" FontSize="12" Foreground="Gray"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Margin="0,10,0,0">
-                                <TextBlock Text="Organization Name" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                <TextBlock Text="Activity description" FontSize="12" Foreground="Gray"/>
-                            </StackPanel>
-                        </Grid>
+                        <StackPanel>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="200"/>
+                                    <ColumnDefinition Width="1*"/>
+
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,10,0,0">
+                                    <TextBox Text="Position" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                    <TextBox Text="From - To"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Margin="0,10,0,0">
+                                    <TextBox Text="Organization Name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                    <TextBox Text="Activity description"/>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
                     </StackPanel>
 
 
@@ -382,25 +462,25 @@
                         <StackPanel Grid.Column="0" Margin="0,10,5,0">
                             <!--Skill-->
                             <StackPanel Margin="0,10,0,10">
-                                <Border Style="{DynamicResource TitleTextBlockBorder}">
-                                    <TextBlock Style="{DynamicResource TitleTextBlock}">SKILL</TextBlock>
-                                </Border>
-                                <TextBlock Text="Skill Name" FontSize="12" TextWrapping="Wrap" Foreground="Gray" Margin="0,10,0,0"/>
+                                
+                                    <TextBox Style="{DynamicResource TitleTextBox}" Text="SKILL"/>
+                                
+                                <TextBox Text="Skill Name" Margin="0,10,0,0"/>
                             </StackPanel>
 
                             <!--References-->
                             <StackPanel Margin="0,10,0,10">
-                                <Border Style="{DynamicResource TitleTextBlockBorder}">
-                                    <TextBlock Style="{DynamicResource TitleTextBlock}">REFERENCES</TextBlock>
-                                </Border>
-                                <TextBlock Text="Reference information including name, title and contact information" FontSize="12" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="Gray"/>
+                                
+                                    <TextBox Style="{DynamicResource TitleTextBox}" Text="REFERENCES"/> 
+                                
+                                <TextBox Text="Reference information including name, title and contact information" Margin="0,10,0,0"/>
                             </StackPanel>
                             <!--Additional information-->
                             <StackPanel Margin="0,10,0,10">
-                                <Border Style="{DynamicResource TitleTextBlockBorder}">
-                                    <TextBlock Style="{DynamicResource TitleTextBlock}">ADDITIONAL INFORMATION</TextBlock>
-                                </Border>
-                                <TextBlock Text="Fill in a additional information" TextWrapping="Wrap" FontSize="12" Margin="0,10,0,0" Foreground="Gray"/>
+                                
+                                    <TextBox Style="{DynamicResource TitleTextBox}" Text="ADDITIONAL INFORMATION"/>
+                                
+                                <TextBox Text="Fill in a additional information" Margin="0,10,0,0"/>
                             </StackPanel>
                         </StackPanel>
 
@@ -414,16 +494,16 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Margin="0,10,0,10">
-                                    <Border Style="{DynamicResource TitleTextBlockBorder}">
-                                        <TextBlock Style="{DynamicResource TitleTextBlock}">CERTIFICATIONS</TextBlock>
-                                    </Border>
+                                    
+                                        <TextBox Style="{DynamicResource TitleTextBox}" Text="CERTIFICATIONS"/>
+                                    
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="1*"/>
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="Certification Name" FontSize="12" Margin="0,10,0,0" Foreground="Gray" TextWrapping="Wrap"/>
-                                        <TextBlock Grid.Column="1" Text="Time" FontSize="12" Margin="0,10,0,0" Foreground="Gray" HorizontalAlignment="Right"/>
+                                        <TextBox Grid.Column="0" Text="Certification Name" Margin="0,10,0,0"/>
+                                        <TextBox Grid.Column="1" Text="Time" Margin="0,10,0,0" HorizontalAlignment="Right"/>
                                     </Grid>
                                 </StackPanel>
                             </Grid>
@@ -436,16 +516,16 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Margin="0,10,0,10">
-                                    <Border Style="{DynamicResource TitleTextBlockBorder}">
-                                        <TextBlock Style="{DynamicResource TitleTextBlock}">HONORS &amp; AWARDS</TextBlock>
-                                    </Border>
+                                    
+                                        <TextBox Style="{DynamicResource TitleTextBox}" Text="HONORS &amp; AWARDS"/>
+                                    
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="1*"/>
                                             <ColumnDefinition Width="1*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Grid.Column="0" Text="Certification Name" FontSize="12" Margin="0,10,0,0" Foreground="Gray" TextWrapping="Wrap"/>
-                                        <TextBlock Grid.Column="1" Text="Time" FontSize="12" Margin="0,10,0,0" Foreground="Gray" HorizontalAlignment="Right"/>
+                                        <TextBox Grid.Column="0" Text="Certification Name" Margin="0,10,0,0"/>
+                                        <TextBox Grid.Column="1" Text="Time" Margin="0,10,0,0" HorizontalAlignment="Right"/>
                                     </Grid>
                                 </StackPanel>
                             </Grid>
@@ -458,10 +538,8 @@
                                 </Grid.RowDefinitions>
 
                                 <StackPanel Margin="0,10,0,10">
-                                    <Border Style="{DynamicResource TitleTextBlockBorder}">
-                                        <TextBlock Style="{DynamicResource TitleTextBlock}">INTEREST</TextBlock>
-                                    </Border>
-                                    <TextBlock Grid.Row="1" Text="Interest Name" TextWrapping="Wrap" FontSize="12" Margin="0,10,0,16" Foreground="Gray" Grid.ColumnSpan="2"/>
+                                    <TextBox Style="{DynamicResource TitleTextBox}" Text="INTEREST"/>
+                                    <TextBox Grid.Row="1" Text="Interest Name" Margin="0,10,0,16"/>
                                 </StackPanel>
                             </Grid>
 
