@@ -5,9 +5,7 @@ VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CV_Generater", "CV_Generater\CV_Generater.csproj", "{F180D3C6-50E6-483D-B1E2-42C215032C63}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CV.Template", "CV.Template", "{85041EEA-A2CA-44BA-A595-E533797201EF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template", "Template1\Template.csproj", "{CCE9E7C8-4D4D-4237-804D-CCEA5800ECCD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template", "Template\Template.csproj", "{602CB9BB-0803-41A4-B456-A46E6C090BD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,16 +17,13 @@ Global
 		{F180D3C6-50E6-483D-B1E2-42C215032C63}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F180D3C6-50E6-483D-B1E2-42C215032C63}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F180D3C6-50E6-483D-B1E2-42C215032C63}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CCE9E7C8-4D4D-4237-804D-CCEA5800ECCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CCE9E7C8-4D4D-4237-804D-CCEA5800ECCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCE9E7C8-4D4D-4237-804D-CCEA5800ECCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCE9E7C8-4D4D-4237-804D-CCEA5800ECCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{602CB9BB-0803-41A4-B456-A46E6C090BD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{602CB9BB-0803-41A4-B456-A46E6C090BD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{602CB9BB-0803-41A4-B456-A46E6C090BD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{602CB9BB-0803-41A4-B456-A46E6C090BD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{CCE9E7C8-4D4D-4237-804D-CCEA5800ECCD} = {85041EEA-A2CA-44BA-A595-E533797201EF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0BB0595E-2F3E-409F-A789-D3DD3632B40B}

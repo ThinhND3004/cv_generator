@@ -1,0 +1,441 @@
+﻿<Window x:Class="Template.Template1Window"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Template"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Template1Window" MinHeight="550" MinWidth="800">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="ThemeColorBrush" Color="YellowGreen"/>
+
+        <Style x:Key="TitleTextBlock" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Foreground" Value="{DynamicResource ThemeColorBrush}"/>
+            <Setter Property="Margin" Value="0,20,0,0"/>
+        </Style>
+        <Style TargetType="Border" x:Key="TitleTextBlockBorder">
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeColorBrush}"/>
+            <Setter Property="BorderThickness" Value="0,0,0,1"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+    </Window.Resources>
+    <Grid Background="WhiteSmoke">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Menu bar -->
+            <RowDefinition Height="*"/>
+            <!-- Content area -->
+        </Grid.RowDefinitions>
+
+        <!-- Transparent Overlay for Click Outside Detection -->
+        <Border Background="#01000000" 
+                Visibility="Collapsed" 
+                Name="Overlay"
+                Grid.RowSpan="2" 
+                Panel.ZIndex="100"
+                MouseDown="Overlay_MouseDown"/>
+
+        <!-- Menu Bar -->
+        <Rectangle HorizontalAlignment="Center" Height="40" Fill="White" VerticalAlignment="Center" Width="462" Margin="5 5 5 25"/>
+
+        <StackPanel Orientation="Horizontal" 
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Margin="5 5 5 25">
+
+            <!-- FontComboBox from Extended WPF Toolkit -->
+            <ComboBox Name="FontsComboBox" Width="150" Margin="0,0,15,0" 
+              SelectionChanged="FontsComboBox_SelectionChanged" VerticalContentAlignment="Center" Style="{StaticResource CVHeaderComboBox}"/>
+
+            <!--Theme Color-->
+            <Button VerticalAlignment="Center" Margin="0,0,10,0" x:Name="ThemeColorButton" Click="ThemeColorButton_Click" 
+                    Style="{StaticResource HeaderButton}">
+                <!-- Set the Button's content to display both a label and the ellipse -->
+                <StackPanel Orientation="Horizontal">
+                    <!-- Label for the Button -->
+                    <TextBlock Text="Theme Color" VerticalAlignment="Center" Margin="0,0,10,0"/>
+
+                    <!-- Color Indicator Circle (Ellipse) -->
+                    <Ellipse x:Name="ColorEllipse" Width="20" Height="20" Fill="{DynamicResource ThemeColorBrush}"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Popup with ColorCanvas -->
+            <Popup x:Name="ColorCanvasPopup" PlacementTarget="{Binding ElementName=ThemeColorButton}" 
+                   Placement="Bottom" HorizontalAlignment="Center">
+                <Border BorderBrush="Gray" BorderThickness="1" Background="White">
+                    <xctk:ColorCanvas x:Name="PopupColorCanvas" Height="280" 
+                                      SelectedColorChanged="PopupColorCanvas_SelectedColorChanged"/>
+                </Border>
+            </Popup>
+
+            <!-- Button to Select Background Image -->
+            <Button Content="CV Background" Width="100" Margin="5" Style="{StaticResource HeaderButton}" x:Name="BackgroundButton" Click="BackgroundButton_Click"/>
+            <!-- Popup for Background Image Selection -->
+            <Popup x:Name="BackgroundPopup" PlacementTarget="{Binding ElementName=BackgroundButton}" 
+           Placement="Bottom" AllowsTransparency="True">
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Choose a background" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <WrapPanel x:Name="ImageSelectionPanel" Width="300" ItemWidth="90" ItemHeight="90" Orientation="Horizontal"/>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
+        </StackPanel>
+
+        <!-- Content area for CV sections -->
+        <ScrollViewer x:Name="ContentScrollViewer" Background="White" Grid.Row="1" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled"
+                      HorizontalAlignment="Center" Margin="10 0 10 0">
+            <!-- Add CV content here -->
+            <StackPanel HorizontalAlignment="Center" Width="21cm" MinHeight="29.7cm">
+
+                <Grid Margin="10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="164"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Header Section -->
+                    <Border x:Name="AvatarBorder" 
+                            BorderBrush="Transparent" 
+                            BorderThickness="2" 
+                            CornerRadius="100"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"
+                            MouseEnter="AvatarBorder_MouseEnter" 
+                            MouseLeave="AvatarBorder_MouseLeave">
+                        <Grid x:Name="AvatarGrid" Width="160" Height="160" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <!-- Avatar Ellipse -->
+                            <Ellipse x:Name="AvatarEllipse" Width="160" Height="160" Fill="LightGray" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                            <!-- Hover Button (Sửa ảnh) -->
+                            <Button x:Name="UploadAvatarButton" 
+                                    Content="✏️" 
+                                    Background="{DynamicResource ThemeColorBrush}" 
+                                    Foreground="White" 
+                                    Width="35" 
+                                    Height="35" 
+                                    HorizontalAlignment="Right" 
+                                    VerticalAlignment="Bottom" 
+                                    Visibility="Collapsed" 
+                                    Click="UploadAvatarButton_Click" 
+                                    Cursor="Hand">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="100">
+                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                <TextBlock Text="{TemplateBinding Content}" FontWeight="Bold" FontSize="14" 
+                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </Border>
+
+                    <StackPanel Grid.Column="1" Margin="0 15">
+                        <Border BorderThickness="0 0 0 1" BorderBrush="{DynamicResource ThemeColorBrush}">
+                            <Grid Margin="10 0 10 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="Vu Hoang Hieu Ngan (K18 HCM)" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}" TextWrapping="Wrap"/>
+                                <TextBlock Grid.Column="1" x:Name="JobPositionTextBlock" Text="Job Position" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+                            </Grid>
+                        </Border>
+
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,10,0,0">
+                                <Grid Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="📅" Foreground="Black" FontSize="12"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock x:Name="DateTextBlock" Text="DD/MM/YY  " Foreground="Gray" FontSize="12"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="📞" Foreground="Black" FontSize="12"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock x:Name="PhoneTextBlock" Text="0123 456 789  " Foreground="Gray" FontSize="12"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="📍" Foreground="Black" FontSize="12"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock x:Name="AddressTextBlock" Text="Address" Foreground="Gray" FontSize="12"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,10,0,0">
+                                <Grid Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="👤" Foreground="Black" FontSize="12" FontWeight="ExtraBold"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock x:Name="GenderTextBlock" Text="Male/Female" Foreground="Gray" FontSize="12"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="✉️" Foreground="Black" FontSize="12"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock x:Name="EmailTextBlock" Text="0123 456 789  " Foreground="Gray" FontSize="12"/>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Margin="0 0 0 10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="25"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="🔗" Foreground="Black" FontSize="12"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock x:Name="WebsiteTextBlock" Text="Address" Foreground="Gray" FontSize="12"/>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                </Grid>
+
+                <!-- Sections -->
+                <StackPanel Margin="15,20,15,10">
+                    
+                    <!-- Objective Section -->
+                    <Border x:Name="ObjectiveBorder" Margin="0,10,0,10">
+                        <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- Objective Section -->
+                            <Border Style="{DynamicResource TitleTextBlockBorder}">
+                                <TextBlock Style="{DynamicResource TitleTextBlock}">OBJECTIVE</TextBlock>
+                            </Border>
+                            <TextBlock Grid.Row="1" x:Name="ObjectiveContentTextBlock" Text="Career goals: short-term, long-term." FontSize="12" Foreground="Gray" Margin="0,5,0,0"/>
+
+                            <!-- Add Section Button, initially hidden -->
+                            <Button Grid.Row="2" x:Name="AddSectionButton" Content="+ Add Section" Width="120" Height="35" HorizontalAlignment="Center" Click="AddSectionButton_Click" Background="{DynamicResource ThemeColorBrush}" Foreground="White" FontSize="14" FontWeight="Bold" Panel.ZIndex="100" Visibility="Collapsed">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="12">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <!-- Education Section -->
+                    <StackPanel Margin="0,10,0,10">
+                        <Border Style="{DynamicResource TitleTextBlockBorder}">
+                            <TextBlock Style="{DynamicResource TitleTextBlock}">EDUCATION</TextBlock>
+                        </Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="1*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,10,0,0">
+                                <TextBlock Text="Courses / Subjects" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                <TextBlock Text="From - To" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,10,0,0">
+                                <TextBlock Text="School name" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                <TextBlock Text="Education description" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!--Work experience-->
+                    <StackPanel Margin="0,10,0,10">
+                        <Border Style="{DynamicResource TitleTextBlockBorder}">
+                            <TextBlock Style="{DynamicResource TitleTextBlock}">WORK EXPERIENCE</TextBlock>
+                        </Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="1*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,10,0,0">
+                                <TextBlock Text="Position" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                <TextBlock Text="From - To" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,10,0,0">
+                                <TextBlock Text="Company name" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                <TextBlock Text="Experience description" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+                    <!--Activities-->
+                    <StackPanel Margin="0,10,0,10">
+                        <Border Style="{DynamicResource TitleTextBlockBorder}">
+                            <TextBlock Style="{DynamicResource TitleTextBlock}">ACTIVITIES</TextBlock>
+                        </Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="1*"/>
+
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,10,0,0">
+                                <TextBlock Text="Position" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                <TextBlock Text="From - To" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Margin="0,10,0,0">
+                                <TextBlock Text="Organization Name" FontWeight="Bold" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                <TextBlock Text="Activity description" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+
+                    <!--Two Column Section-->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Left Section Column-->
+                        <StackPanel Grid.Column="0" Margin="0,10,5,0">
+                            <!--Skill-->
+                            <StackPanel Margin="0,10,0,10">
+                                <Border Style="{DynamicResource TitleTextBlockBorder}">
+                                    <TextBlock Style="{DynamicResource TitleTextBlock}">SKILL</TextBlock>
+                                </Border>
+                                <TextBlock Text="Skill Name" FontSize="12" TextWrapping="Wrap" Foreground="Gray" Margin="0,10,0,0"/>
+                            </StackPanel>
+
+                            <!--References-->
+                            <StackPanel Margin="0,10,0,10">
+                                <Border Style="{DynamicResource TitleTextBlockBorder}">
+                                    <TextBlock Style="{DynamicResource TitleTextBlock}">REFERENCES</TextBlock>
+                                </Border>
+                                <TextBlock Text="Reference information including name, title and contact information" FontSize="12" TextWrapping="Wrap" Margin="0,10,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                            <!--Additional information-->
+                            <StackPanel Margin="0,10,0,10">
+                                <Border Style="{DynamicResource TitleTextBlockBorder}">
+                                    <TextBlock Style="{DynamicResource TitleTextBlock}">ADDITIONAL INFORMATION</TextBlock>
+                                </Border>
+                                <TextBlock Text="Fill in a additional information" TextWrapping="Wrap" FontSize="12" Margin="0,10,0,0" Foreground="Gray"/>
+                            </StackPanel>
+                        </StackPanel>
+
+                        <!--Right Section Column-->
+                        <StackPanel Grid.Column="1" Margin="5,10,0,0">
+                            <!--Certifications-->
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Margin="0,10,0,10">
+                                    <Border Style="{DynamicResource TitleTextBlockBorder}">
+                                        <TextBlock Style="{DynamicResource TitleTextBlock}">CERTIFICATIONS</TextBlock>
+                                    </Border>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Certification Name" FontSize="12" Margin="0,10,0,0" Foreground="Gray" TextWrapping="Wrap"/>
+                                        <TextBlock Grid.Column="1" Text="Time" FontSize="12" Margin="0,10,0,0" Foreground="Gray" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+
+                            <!--Honors & Awards-->
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Margin="0,10,0,10">
+                                    <Border Style="{DynamicResource TitleTextBlockBorder}">
+                                        <TextBlock Style="{DynamicResource TitleTextBlock}">HONORS &amp; AWARDS</TextBlock>
+                                    </Border>
+                                    <Grid Grid.Row="1">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="1*"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Column="0" Text="Certification Name" FontSize="12" Margin="0,10,0,0" Foreground="Gray" TextWrapping="Wrap"/>
+                                        <TextBlock Grid.Column="1" Text="Time" FontSize="12" Margin="0,10,0,0" Foreground="Gray" HorizontalAlignment="Right"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Grid>
+
+                            <!--INTEREST-->
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Margin="0,10,0,10">
+                                    <Border Style="{DynamicResource TitleTextBlockBorder}">
+                                        <TextBlock Style="{DynamicResource TitleTextBlock}">INTEREST</TextBlock>
+                                    </Border>
+                                    <TextBlock Grid.Row="1" Text="Interest Name" TextWrapping="Wrap" FontSize="12" Margin="0,10,0,16" Foreground="Gray" Grid.ColumnSpan="2"/>
+                                </StackPanel>
+                            </Grid>
+
+                        </StackPanel>
+                    </Grid>
+                    <!-- Additional Sections remain unchanged -->
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>
