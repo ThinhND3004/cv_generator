@@ -76,7 +76,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="0 50 10 0">
                     <Button Content="Generate to PDF" Width="120" Click="GenerateToPdf_Click" Margin="0 0 10 0"/>
-                    <Button Content="Generate to Docs" Width="120"/>
+                    <Button Content="Generate to Docs" Width="120" Click="GenerateToDocs_Click"/>
                 </StackPanel>
             </StackPanel>
 

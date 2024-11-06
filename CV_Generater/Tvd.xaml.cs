@@ -2,10 +2,20 @@
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using System.IO;
+using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using static System.Net.Mime.MediaTypeNames;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Document = DocumentFormat.OpenXml.Wordprocessing.Document;
+using Paragraph = DocumentFormat.OpenXml.Wordprocessing.Paragraph;
+using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
+using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
+using Bold = DocumentFormat.OpenXml.Wordprocessing.Bold;
 
 namespace CV_Generater
 {
@@ -247,6 +257,82 @@ namespace CV_Generater
 
             document.Close();
             MessageBox.Show("PDF generated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void GenerateToDocs_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Word Document (*.docx)|*.docx",
+                FileName = "Generated_CV.docx"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                // Create a new Word document
+                using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filePath, DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
+                {
+                    // Add a main document part
+                    MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+                    mainPart.Document = new Document();
+                    Body body = new Body();
+
+                    // Add Title
+                    Paragraph titleParagraph = new Paragraph(new Run(new Text("CV")));
+                    titleParagraph.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Center });
+                    body.Append(titleParagraph);
+
+                    // Personal Information Section
+                    body.Append(CreateSectionHeader("Personal Information"));
+                    body.Append(CreateInfoParagraph("Name:", PersonalInfoLabel.Text));
+                    body.Append(CreateInfoParagraph("Position:", PositionLabel.Text));
+                    body.Append(CreateInfoParagraph("Email:", EmailLabel.Text));
+                    body.Append(CreateInfoParagraph("Phone:", PhoneLabel.Text));
+                    body.Append(CreateInfoParagraph("Address:", AddressLabel.Text));
+
+                    // Professional Experience Section
+                    body.Append(CreateSectionHeader("Professional Experience"));
+                    body.Append(CreateInfoParagraph("Company:", CompanyNameLabel.Text));
+                    body.Append(CreateInfoParagraph("Position:", PositionLabel.Text));
+                    body.Append(CreateInfoParagraph("Years:", YearsLabel.Text));
+                    body.Append(CreateInfoParagraph("Description:", DescriptionLabel.Text));
+
+                    // Education Section
+                    body.Append(CreateSectionHeader("Education"));
+                    body.Append(CreateInfoParagraph("Degree:", DegreeLabel.Text));
+                    body.Append(CreateInfoParagraph("Years:", DegreeYearsLabel.Text));
+
+                    // Save the document
+                    mainPart.Document.Append(body);
+                    mainPart.Document.Save();
+                }
+
+                MessageBox.Show("DOCX generated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
+
+
+        }
+        // Helper method to create section headers
+        private Paragraph CreateSectionHeader(string headerText)
+        {
+            Paragraph headerParagraph = new Paragraph(new Run(new Text(headerText)));
+            headerParagraph.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Left });
+            headerParagraph.ParagraphProperties.Append(new Bold());
+            return headerParagraph;
+        }
+
+        // Helper method to create info paragraphs
+        private Paragraph CreateInfoParagraph(string label, string info)
+        {
+            Run labelRun = new Run(new Text(label + " "));
+            Run infoRun = new Run(new Text(info));
+            Paragraph paragraph = new Paragraph();
+            paragraph.Append(labelRun);
+            paragraph.Append(infoRun);
+            return paragraph;
         }
     }
 }
