@@ -214,7 +214,7 @@
                                     <ColumnDefinition Width="1*"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBox Grid.Column="0" Text="Vu Hoang Hieu Ngan (K18 HCM)" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}" TextWrapping="Wrap"/>
+                                <TextBox Grid.Column="0" Text="Fullname" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}" TextWrapping="Wrap"/>
                                 <TextBox Grid.Column="1" x:Name="JobPositionTextBox" Text="Job Position" FontSize="12" Foreground="{DynamicResource ThemeColorBrush}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
                             </Grid>
                         </Border>
