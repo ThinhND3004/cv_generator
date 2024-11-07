@@ -55,51 +55,18 @@
 
                         <TextBlock x:Name="DescriptionLabel" Text="Designed unit test case." FontSize="12" Margin="0,0,0,5"                           MouseDown="DescriptionLabel_MouseDown" />
                         <TextBox x:Name="DescriptionTextBox" Visibility="Collapsed" LostFocus="DescriptionTextBox_LostFocus"/>
-
-                        <StackPanel Width="111" HorizontalAlignment="Left" >
-                            <Button Content="Add New Line" Click="AddNewLineButton_Click"/>
-                            <Button Content="Add New Bold Line" Click="AddNewBoldLineButton_Click" />
+                        <StackPanel x:Name="ExperienceList" Margin="0,10,0,0"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Button Content="Add Title" Click="AddTitleButton_Click" Height="20"/>
+                            <Button Content="Add New Line" Click="AddNewLineButton_Click" Margin="5"/>
+                            <Button Content="Add New Bold Line" Click="AddNewBoldLineButton_Click" Margin="5"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <StackPanel>
-                        <TextBlock Text="Education" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
-                        <TextBlock x:Name="DegreeLabel" Text="FPT University" FontWeight="Bold" FontSize="16" Margin="0,5"
-                           MouseDown="DegreeLabel_MouseDown"/>
-                        <TextBox x:Name="DegreeTextBox" Visibility="Collapsed" LostFocus="DegreeTextBox_LostFocus"/>
-
-                        <TextBlock x:Name="DegreeYearsLabel" Text="2022-2024" FontSize="12" Margin="0,5"
-                           MouseDown="DegreeYearsLabel_MouseDown"/>
-                        <TextBox x:Name="DegreeYearsTextBox" Visibility="Collapsed" LostFocus="DegreeYearsTextBox_LostFocus"/>
-
-                        <StackPanel>
-                            <Button Content="Add New Line" Click="AddNewLineButton_Click"/>
-                            <Button Content="Add New Bold Line" Click="AddNewBoldLineButton_Click" />
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-
-
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <StackPanel>
-                        <TextBlock Text="Skill" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
-                        <TextBlock x:Name="SkillLabel" Text="Skill here" FontSize="12" Margin="0,5" MouseDown="SkillLabel_MouseDown"/>
-                        <TextBox x:Name="SkillTextBox" Visibility="Collapsed" LostFocus="SkillTextBox_LostFocus"/>
-                        <StackPanel>
-                            <Button Content="Add New Line" Click="AddNewLineButton_Click"/>
-                            <Button Content="Add New Bold Line" Click="AddNewBoldLineButton_Click" />
-                        </StackPanel>
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel x:Name="ButtonPanel" Margin="0 10 100 0" HorizontalAlignment="Left">
-                    <Button Content="Add New StackPanel With Buttons" Click="AddNewStackPanelWithButtonsButton_Click"/>
-                </StackPanel>
-
-
+                
+                   
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="0 50 10 0">
                     <Button Content="Generate to PDF" Width="120" Click="GenerateToPdf_Click" Margin="0 0 10 0"/>
                     <Button Content="Generate to Docs" Width="120"/>
