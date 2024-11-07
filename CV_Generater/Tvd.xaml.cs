@@ -13,6 +13,17 @@ namespace CV_Generater
 {
     public partial class Tvd : Window
     {
+        private TextBox inputTextBox;
+        private Button confirmButton;
+        private Button cancelButton;
+        private bool isBold;
+        private List<FormattedEntry> entries = new List<FormattedEntry>();
+        public class FormattedEntry
+        {
+            public string Text { get; set; }
+            public XFont Font { get; set; }
+            public XBrush Brush { get; set; }
+        }
         public Tvd()
         {
             InitializeComponent();
@@ -160,51 +171,51 @@ namespace CV_Generater
         }
 
 
-        private void DegreeLabel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            DegreeLabel.Visibility = Visibility.Collapsed;
-            DegreeTextBox.Text = DegreeLabel.Text;
-            DegreeTextBox.Visibility = Visibility.Visible;
-            DegreeTextBox.Focus();
-        }
+        //private void DegreeLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    DegreeLabel.Visibility = Visibility.Collapsed;
+        //    DegreeTextBox.Text = DegreeLabel.Text;
+        //    DegreeTextBox.Visibility = Visibility.Visible;
+        //    DegreeTextBox.Focus();
+        //}
 
-        private void DegreeTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            DegreeLabel.Text = DegreeTextBox.Text;
-            DegreeTextBox.Visibility = Visibility.Collapsed;
-            DegreeLabel.Visibility = Visibility.Visible;
-        }
-
-
-        private void DegreeYearsLabel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            DegreeYearsLabel.Visibility = Visibility.Collapsed;
-            DegreeYearsTextBox.Text = DegreeYearsLabel.Text;
-            DegreeYearsTextBox.Visibility = Visibility.Visible;
-            DegreeYearsTextBox.Focus();
-        }
-
-        private void DegreeYearsTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            DegreeYearsLabel.Text = DegreeYearsTextBox.Text;
-            DegreeYearsTextBox.Visibility = Visibility.Collapsed;
-            DegreeYearsLabel.Visibility = Visibility.Visible;
-        }
-        private void SkillLabel_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            SkillLabel.Visibility = Visibility.Collapsed;
-            SkillTextBox.Text = SkillLabel.Text;
-            SkillTextBox.Visibility = Visibility.Visible;
-            SkillTextBox.Focus();
-        }
+        //private void DegreeTextBox_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    DegreeLabel.Text = DegreeTextBox.Text;
+        //    DegreeTextBox.Visibility = Visibility.Collapsed;
+        //    DegreeLabel.Visibility = Visibility.Visible;
+        //}
 
 
-        private void SkillTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            SkillLabel.Text = SkillTextBox.Text;
-            SkillTextBox.Visibility = Visibility.Collapsed;
-            SkillLabel.Visibility = Visibility.Visible;
-        }
+        //private void DegreeYearsLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    DegreeYearsLabel.Visibility = Visibility.Collapsed;
+        //    DegreeYearsTextBox.Text = DegreeYearsLabel.Text;
+        //    DegreeYearsTextBox.Visibility = Visibility.Visible;
+        //    DegreeYearsTextBox.Focus();
+        //}
+
+        //private void DegreeYearsTextBox_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    DegreeYearsLabel.Text = DegreeYearsTextBox.Text;
+        //    DegreeYearsTextBox.Visibility = Visibility.Collapsed;
+        //    DegreeYearsLabel.Visibility = Visibility.Visible;
+        //}
+        //private void SkillLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    SkillLabel.Visibility = Visibility.Collapsed;
+        //    SkillTextBox.Text = SkillLabel.Text;
+        //    SkillTextBox.Visibility = Visibility.Visible;
+        //    SkillTextBox.Focus();
+        //}
+
+
+        //private void SkillTextBox_LostFocus(object sender, RoutedEventArgs e)
+        //{
+        //    SkillLabel.Text = SkillTextBox.Text;
+        //    SkillTextBox.Visibility = Visibility.Collapsed;
+        //    SkillLabel.Visibility = Visibility.Visible;
+        //}
 
 
         private void AddNewLine(StackPanel targetStackPanel, Button clickedButton)
@@ -267,14 +278,104 @@ namespace CV_Generater
 
         private void AddNewLineButton_Click(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
-            StackPanel parentStackPanel = (StackPanel)((FrameworkElement)sender).Parent;
-            AddNewLine(parentStackPanel, clickedButton);
+            //Button clickedButton = (Button)sender;
+            //StackPanel parentStackPanel = (StackPanel)((FrameworkElement)sender).Parent;
+            //AddNewLine(parentStackPanel, clickedButton);
+            ShowInputTextBox();
         }
+        private void ShowInputTextBox()
+        {
 
+            inputTextBox = new TextBox
+            {
+                Width = 200,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            // Tạo nút Confirm
+            confirmButton = new Button
+            {
+                Content = "Confirm",
+                Margin = new Thickness(5)
+            };
+            // Nút Cancel
+            cancelButton = new Button
+            {
+                Content = "Cancel",
+                Margin = new Thickness(5)
+            };
+            confirmButton.Click += ConfirmButton_Click;
+            //Event cho Cancel
+            cancelButton.Click += (s, args) =>
+            {
+                // Xóa TextBox và nút Confirm và Cancel
+                ExperienceList.Children.Remove(inputTextBox);
+                ExperienceList.Children.Remove(confirmButton);
+                ExperienceList.Children.Remove(cancelButton);
+            };
+
+            ExperienceList.Children.Add(inputTextBox);
+            ExperienceList.Children.Add(confirmButton);
+            ExperienceList.Children.Add(cancelButton);
+            inputTextBox.Focus();
+        }
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            string entry = inputTextBox.Text.Trim();
+
+            if (!string.IsNullOrEmpty(entry))
+            {
+
+                //StackPanel để xóa
+                StackPanel entryPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 5, 0, 5) };
+                //TextBlock để hiển thị thông tin
+                TextBlock entryTextBlock = new TextBlock
+                {
+                    Text = entry,
+                    FontSize = 16,
+                    Margin = new Thickness(0, 5, 0, 5)
+                };
+                var normalEntry = new FormattedEntry
+                {
+                    Text = entry,
+                    Font = new XFont("Arial", 16, XFontStyle.Regular),
+                    Brush = XBrushes.Black
+                };
+                entries.Add(normalEntry);
+                //Nút xóa
+                Button deleteButton = new Button
+                {
+                    Content = "X",
+                    Width = 20,
+                    Height = 20,
+                    Margin = new Thickness(5, 0, 0, 0)
+                };
+                // Đăng ký sự kiện cho nút xóa
+                deleteButton.Click += (s, args) =>
+                {
+                    ExperienceList.Children.Remove(entryPanel);
+                };
+
+                // Thêm TextBlock và nút xóa vào StackPanel
+                entryPanel.Children.Add(entryTextBlock);
+                entryPanel.Children.Add(deleteButton);
+
+                // Thêm StackPanel vào danh sách hiển thị
+                ExperienceList.Children.Add(entryPanel);
+
+                // Xóa TextBox và nút Confirm
+                ExperienceList.Children.Remove(inputTextBox);
+                ExperienceList.Children.Remove(confirmButton);
+                ExperienceList.Children.Remove(cancelButton);
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid entry.");
+            }
+        }
         private void AddNewBoldLine(StackPanel targetStackPanel, Button clickedButton)
         {
-            
+
 
             StackPanel textWithButtonPanel = new StackPanel
             {
@@ -334,11 +435,114 @@ namespace CV_Generater
 
         private void AddNewBoldLineButton_Click(object sender, RoutedEventArgs e)
         {
-            Button clickedButton = (Button)sender;
-            StackPanel parentStackPanel = (StackPanel)((FrameworkElement)sender).Parent;
-            AddNewBoldLine(parentStackPanel, clickedButton);
+            //Button clickedButton = (Button)sender;
+            //StackPanel parentStackPanel = (StackPanel)((FrameworkElement)sender).Parent;
+            //AddNewBoldLine(parentStackPanel, clickedButton);
+            isBold = true; // Đặt kiểu chữ là đậm
+            ShowInputBoldTextBox();
         }
 
+        private void ShowInputBoldTextBox()
+        {
+            // Tạo một TextBox mới để nhập dữ liệu
+            inputTextBox = new TextBox
+            {
+                Width = 200,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            // Tạo nút Confirm
+            confirmButton = new Button
+            {
+                Content = "Confirm",
+                Margin = new Thickness(5)
+            };
+
+            // Tạo nút Cancel
+            cancelButton = new Button
+            {
+                Content = "Cancel",
+                Margin = new Thickness(5)
+            };
+
+            // Đăng ký sự kiện cho nút Confirm
+            confirmButton.Click += ConfirmBoldButton_Click;
+
+            // Đăng ký sự kiện cho nút Cancel
+            cancelButton.Click += (s, args) =>
+            {
+                // Xóa TextBox và nút Confirm và Cancel
+                ExperienceList.Children.Remove(inputTextBox);
+                ExperienceList.Children.Remove(confirmButton);
+                ExperienceList.Children.Remove(cancelButton);
+            };
+
+            // Thêm TextBox và nút vào StackPanel
+            ExperienceList.Children.Add(inputTextBox);
+            ExperienceList.Children.Add(confirmButton);
+            ExperienceList.Children.Add(cancelButton);
+
+            inputTextBox.Focus(); // Tập trung vào TextBox
+        }
+
+        private void ConfirmBoldButton_Click(object sender, RoutedEventArgs e)
+        {
+            string entry = inputTextBox.Text.Trim();
+
+            if (!string.IsNullOrEmpty(entry))
+            {
+              
+                // Tạo một StackPanel để chứa TextBlock và nút xóa
+                StackPanel entryPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 5, 0, 5) };
+
+                // Tạo một TextBlock để hiển thị thông tin
+                TextBlock entryTextBlock = new TextBlock
+                {
+                    Text = entry,
+                    FontSize = 16,
+                    FontWeight = isBold ? FontWeights.Bold : FontWeights.Normal, // Đặt kiểu chữ dựa trên biến isBold
+                    Margin = new Thickness(0, 0, 5, 0)
+                };
+                var normalEntry = new FormattedEntry
+                {
+                    Text = entry,
+                    Font = new XFont("Arial", 16, XFontStyle.Bold),
+                    Brush = XBrushes.Black
+                };
+                entries.Add(normalEntry);
+
+                // Tạo nút xóa
+                Button deleteButton = new Button
+                {
+                    Content = "X",
+                    Width = 20,
+                    Height = 20,
+                    Margin = new Thickness(5, 0, 0, 0)
+                };
+
+                // Đăng ký sự kiện cho nút xóa
+                deleteButton.Click += (s, args) =>
+                {
+                    ExperienceList.Children.Remove(entryPanel);
+                };
+
+                // Thêm TextBlock và nút xóa vào StackPanel
+                entryPanel.Children.Add(entryTextBlock);
+                entryPanel.Children.Add(deleteButton);
+
+                // Thêm StackPanel vào danh sách hiển thị
+                ExperienceList.Children.Add(entryPanel);
+
+                // Xóa TextBox và nút Confirm và Cancel
+                ExperienceList.Children.Remove(inputTextBox);
+                ExperienceList.Children.Remove(confirmButton);
+                ExperienceList.Children.Remove(cancelButton);
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid entry.");
+            }
+        }
 
         private void AddNewStackPanelWithButtons(StackPanel parentStackPanel, Button clickedButton)
         {
@@ -561,7 +765,7 @@ namespace CV_Generater
             XBrush brush = XBrushes.White;
 
 
-            
+
 
             // Set background color
             gfx.DrawRectangle(new XSolidBrush(XColor.FromArgb(0x2D, 0x3E, 0x50)), 0, 0, page.Width / 3, page.Height);
@@ -594,17 +798,26 @@ namespace CV_Generater
             gfx.DrawString(AddressLabel.Text, normalFont, brush, new XPoint(y, 190 + x));
 
             // Experience Section
-            gfx.DrawString("Professional Experience", titleFont, XBrushes.Black, new XPoint(200, 40));
-            gfx.DrawString(CompanyNameLabel.Text, subtitleFont, XBrushes.Black, new XPoint(200, 70));
-            gfx.DrawString(YearsLabel.Text, normalFont, XBrushes.Black, new XPoint(200, 100));
-            gfx.DrawString(DescriptionLabel.Text, normalFont, XBrushes.Black, new XPoint(200, 130));
-
+            //gfx.DrawString("Professional Experience", titleFont, XBrushes.Black, new XPoint(200, 40));
+            //gfx.DrawString(CompanyNameLabel.Text, subtitleFont, XBrushes.Black, new XPoint(200, 70));
+            //gfx.DrawString(YearsLabel.Text, normalFont, XBrushes.Black, new XPoint(200, 100));
+            //gfx.DrawString(DescriptionLabel.Text, normalFont, XBrushes.Black, new XPoint(200, 130));
+            int yPosition = 70; // Vị trí bắt đầu cho từng mục kinh nghiệm
+                                //foreach (var experience in entries)
+                                //{
+                                //    gfx.DrawString(experience, subtitleFont, XBrushes.Black, new XPoint(200, yPosition));
+                                //    yPosition += 30; // Cập nhật khoảng cách cho mục tiếp theo
+                                //    //gfx.DrawString(experience, normalFont, XBrushes.Black, new XPoint(200, yPosition));
+                                //    //yPosition += 20; // Cập nhật khoảng cách cho mục tiếp theo
+                                //    //gfx.DrawString(experience, normalFont, XBrushes.Black, new XPoint(200, yPosition));
+                                //    //yPosition += 40; // Thêm khoảng cách giữa các mục
+                                //}
+            foreach (var entry in entries)
+            {
+                gfx.DrawString(entry.Text, entry.Font, entry.Brush, new XPoint(200, yPosition));
+                yPosition += 30; // Điều chỉnh khoảng cách giữa các mục
+            }
             // Education Section
-            gfx.DrawString("Education", titleFont, XBrushes.Black, new XPoint(200, 180));
-            gfx.DrawString(DegreeLabel.Text, subtitleFont, XBrushes.Black, new XPoint(200, 210));
-            gfx.DrawString(DegreeYearsLabel.Text, normalFont, XBrushes.Black, new XPoint(200, 240));
-
-
 
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
@@ -624,6 +837,115 @@ namespace CV_Generater
 
             document.Close();
             MessageBox.Show("PDF generated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void AddTitleButton_Click(object sender, RoutedEventArgs e)
+        {
+            isBold = true; // Đặt kiểu chữ là đậm
+            ShowInputTitleTextBox(); // Hiển thị ô nhập liệu cho tiêu đề
+        }
+
+        private void ShowInputTitleTextBox()
+        {
+            // Tạo một TextBox mới để nhập dữ liệu
+            inputTextBox = new TextBox
+            {
+                Width = 200,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            // Tạo nút Confirm
+            confirmButton = new Button
+            {
+                Content = "Confirm",
+                Margin = new Thickness(5)
+            };
+
+            // Tạo nút Cancel
+            cancelButton = new Button
+            {
+                Content = "Cancel",
+                Margin = new Thickness(5)
+            };
+
+            // Đăng ký sự kiện cho nút Confirm
+            confirmButton.Click += ConfirmTitleButton_Click;
+
+            // Đăng ký sự kiện cho nút Cancel
+            cancelButton.Click += (s, args) =>
+            {
+                // Xóa TextBox và nút Confirm và Cancel
+                ExperienceList.Children.Remove(inputTextBox);
+                ExperienceList.Children.Remove(confirmButton);
+                ExperienceList.Children.Remove(cancelButton);
+            };
+
+            // Thêm TextBox và nút vào StackPanel của giáo dục
+            ExperienceList.Children.Add(inputTextBox);
+            ExperienceList.Children.Add(confirmButton);
+            ExperienceList.Children.Add(cancelButton);
+
+            inputTextBox.Focus(); // Tập trung vào TextBox
+        }
+
+        private void ConfirmTitleButton_Click(object sender, RoutedEventArgs e)
+        {
+            string entry = inputTextBox.Text.Trim();
+
+            if (!string.IsNullOrEmpty(entry))
+            {
+                
+                // Tạo một StackPanel để chứa TextBlock và nút xóa
+                StackPanel entryPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 5, 0, 5) };
+
+                // Tạo một TextBlock để hiển thị thông tin
+                TextBlock entryTextBlock = new TextBlock
+                {
+                    Text = entry,
+                    FontSize = 24, // Kích thước chữ lớn hơn
+                    FontWeight = FontWeights.Bold, // Chữ in đậm
+                    Foreground = Brushes.Red, // Màu chữ đỏ
+                    Margin = new Thickness(0, 0, 5, 0)
+                };
+                var normalEntry = new FormattedEntry
+                {
+                    Text = entry,
+                    Font = new XFont("Arial", 24, XFontStyle.Bold),
+                    Brush = XBrushes.Red
+                };
+                entries.Add(normalEntry);
+
+                // Tạo nút xóa
+                Button deleteButton = new Button
+                {
+                    Content = "X",
+                    Width = 20,
+                    Height = 20,
+                    Margin = new Thickness(5, 0, 0, 0)
+                };
+
+                // Đăng ký sự kiện cho nút xóa
+                deleteButton.Click += (s, args) =>
+                {
+                    ExperienceList.Children.Remove(entryPanel);
+                };
+
+                // Thêm TextBlock và nút xóa vào StackPanel
+                entryPanel.Children.Add(entryTextBlock);
+                entryPanel.Children.Add(deleteButton);
+
+                // Thêm StackPanel vào danh sách hiển thị
+                ExperienceList.Children.Add(entryPanel);
+
+                // Xóa TextBox và nút Confirm và Cancel
+                ExperienceList.Children.Remove(inputTextBox);
+                ExperienceList.Children.Remove(confirmButton);
+                ExperienceList.Children.Remove(cancelButton);
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid entry.");
+            }
         }
     }
 }
