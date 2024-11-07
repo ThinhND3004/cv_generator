@@ -95,45 +95,6 @@
             </Setter>
         </Style>
 
-        <!--<DataTemplate x:Key="AdditionalInformationDataTemplate">
-            <StackPanel Margin="0,10,0,10">
-                <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    --><!-- Objective Section --><!--
-
-                    <TextBox Style="{DynamicResource TitleTextBox}" Text="ADDITIONAL INFORMATION"/>
-
-                    <TextBox Grid.Row="1" Text="Fill in additional information" Margin="0,5,0,0"/>
-
-                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
-                </Grid>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="SubInformationDataTemplate">
-            <StackPanel>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="1*"/>
-
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" Margin="0,10,0,0">
-                        <TextBox Text="Position" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
-                        <TextBox Text="From - To"/>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="0,10,0,0">
-                        <TextBox Text="Organization Name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
-                        <TextBox Text="Activity description"/>
-                    </StackPanel>
-                </Grid>
-                <Button x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
-            </StackPanel>
-        </DataTemplate>-->
-
     </Window.Resources>
     <Grid Background="WhiteSmoke">
         <Grid.RowDefinitions>
@@ -196,6 +157,23 @@
                     </StackPanel>
                 </Border>
             </Popup>
+            <!--Export button-->
+
+            <Button x:Name="ExportButton" Content="Export" Style="{StaticResource HeaderButton}" Width="60" Click="ExportButton_Click"/>
+            <Popup x:Name="ExportPopup" PlacementTarget="{Binding ElementName=ExportButton}" Placement="Bottom" AllowsTransparency="True" StaysOpen="False">
+                <Border Background="White" BorderBrush="Gray" BorderThickness="1" Padding="10">
+                    <StackPanel>
+                        <TextBlock Text="Choose export format" FontWeight="Bold" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+                        <WrapPanel x:Name="MethodWrapPanel" ItemWidth="90" ItemHeight="90" Orientation="Horizontal" Cursor="Hand">
+                            <Button Content="PDF" Margin="5" Click="ExportToPdf_Click">
+                            </Button>
+                            <Button Content="Word" Margin="5" Click="ExportToWord_Click">
+                            </Button>
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </Popup>
+
 
         </StackPanel>
 
@@ -351,6 +329,7 @@
                 <!-- Sections -->
                 <StackPanel Margin="15,20,15,10" x:Name="BodyCVStackPanel">
 
+                            <!-- Objective Section -->
                     <StackPanel Margin="0,10,0,10">
                         <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
                             <Grid.RowDefinitions>
@@ -358,98 +337,141 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            <!-- Objective Section -->
                             
                             <TextBox Style="{DynamicResource TitleTextBox}" Text="OBJECTIVE"/>
                             
                             <TextBox Grid.Row="1" x:Name="ObjectiveContentTextBlock" Text="Career goals: short-term, long-term." Margin="0,5,0,0"/>
 
                             <!-- Add Section Button, initially hidden -->
-                            <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Width="120" Height="35" HorizontalAlignment="Center" Cursor="Hand" Click="AddSectionButton_Click" IsEnabled="True" Background="{DynamicResource ThemeColorBrush}" Foreground="White" FontSize="14" FontWeight="Bold" Panel.ZIndex="100" Visibility="Collapsed">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" 
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
-                            CornerRadius="12">
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Content="{TemplateBinding Content}"/>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
+                            <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
                         </Grid>
                     
                     </StackPanel>
                     <!-- Education Section -->
                     <StackPanel Margin="0,10,0,10">
+                        <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
                         
-                            <TextBox Style="{DynamicResource TitleTextBox}" Text="EDUCATION"/>
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200"/>
-                                    <ColumnDefinition Width="1*"/>
 
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" Margin="0,10,0,0">
-                                    <TextBox Text="Courses / Subjects" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                    <TextBox Text="From - To"/>
+                            <TextBox Grid.Row="0" Grid.ColumnSpan="2"  Style="{DynamicResource TitleTextBox}" Text="EDUCATION"/>
+                            <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,10,0,0">
+                                            <TextBox Text="Courses / Subjects" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                            <TextBox Text="From - To"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,10,0,0">
+                                            <TextBox Text="School name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                            <TextBox Text="Education description"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Column="1" Margin="0,10,0,0">
-                                    <TextBox Text="School name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                    <TextBox Text="Education description"/>
-                                </StackPanel>
-                                <!--Add Item Button here-->
-                            </Grid>
-                        </StackPanel>
+                            </StackPanel>
+                            <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                        </Grid>
                     </StackPanel>
 
                     <!--Work experience-->
                     <StackPanel Margin="0,10,0,10">
-                        
-                            <TextBox Style="{DynamicResource TitleTextBox}" Text="WORK EXPERIENCE"/>
-                        
-                        <Grid>
+                        <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="200"/>
                                 <ColumnDefinition Width="1*"/>
-
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0" Margin="0,10,0,0">
-                                <TextBox Text="Position" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                <TextBox Text="From - To"/>
+
+
+                            <TextBox Grid.Row="0" Grid.ColumnSpan="2"  Style="{DynamicResource TitleTextBox}" Text="WORK EXPERIENCE"/>
+                            <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,10,0,0">
+                                            <TextBox Text="Position" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                            <TextBox Text="From - To"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,10,0,0">
+                                            <TextBox Text="Company Name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                            <TextBox Text="Experience description"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Column="1" Margin="0,10,0,0">
-                                <TextBox Text="Company name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                <TextBox Text="Experience description"/>
-                            </StackPanel>
+                            <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
                         </Grid>
                     </StackPanel>
 
                     <!--Activities-->
                     <StackPanel Margin="0,10,0,10">
-                        
-                            <TextBox Style="{DynamicResource TitleTextBox}" Text="ACTIVITIES"/>
+                        <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
 
-                        <StackPanel>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="200"/>
-                                    <ColumnDefinition Width="1*"/>
 
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Grid.Column="0" Margin="0,10,0,0">
-                                    <TextBox Text="Position" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                    <TextBox Text="From - To"/>
+                            <TextBox Grid.Row="0" Grid.ColumnSpan="2"  Style="{DynamicResource TitleTextBox}" Text="ACTIVITIES"/>
+                            <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                                <StackPanel>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="1*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,10,0,0">
+                                            <TextBox Text="Position" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                            <TextBox Text="From - To"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,10,0,0">
+                                            <TextBox Text="Organization Name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
+                                            <TextBox Text="Activity description"/>
+                                        </StackPanel>
+                                    </Grid>
                                 </StackPanel>
-                                <StackPanel Grid.Column="1" Margin="0,10,0,0">
-                                    <TextBox Text="Organization Name" FontWeight="Bold" Foreground="{DynamicResource ThemeColorBrush}"/>
-                                    <TextBox Text="Activity description"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
+                            </StackPanel>
+                            <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                        </Grid>
                     </StackPanel>
-
 
                     <!--Two Column Section-->
                     <Grid>
@@ -459,89 +481,166 @@
                         </Grid.ColumnDefinitions>
 
                         <!--Left Section Column-->
-                        <StackPanel Grid.Column="0" Margin="0,10,5,0">
+                        <StackPanel Grid.Column="0" Margin="0,10,5,0" x:Name="LeftSectionStackPanel" >
                             <!--Skill-->
                             <StackPanel Margin="0,10,0,10">
-                                
+                                <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <!-- Objective Section -->
+
                                     <TextBox Style="{DynamicResource TitleTextBox}" Text="SKILL"/>
-                                
-                                <TextBox Text="Skill Name" Margin="0,10,0,0"/>
+
+                                    <TextBox Grid.Row="1" Text="Skill Name" Margin="0,5,0,0"/>
+
+                                    <!-- Add Section Button, initially hidden -->
+                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                </Grid>
+
                             </StackPanel>
 
                             <!--References-->
                             <StackPanel Margin="0,10,0,10">
-                                
-                                    <TextBox Style="{DynamicResource TitleTextBox}" Text="REFERENCES"/> 
-                                
-                                <TextBox Text="Reference information including name, title and contact information" Margin="0,10,0,0"/>
+                                <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <!-- Objective Section -->
+
+                                    <TextBox Style="{DynamicResource TitleTextBox}" Text="REFERENCES"/>
+
+                                    <TextBox Grid.Row="1" Text="Reference information including name, title and contact information" Margin="0,5,0,0"/>
+
+                                    <!-- Add Section Button, initially hidden -->
+                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                </Grid>
                             </StackPanel>
+                            
                             <!--Additional information-->
                             <StackPanel Margin="0,10,0,10">
-                                
+                                <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <!-- Objective Section -->
+
                                     <TextBox Style="{DynamicResource TitleTextBox}" Text="ADDITIONAL INFORMATION"/>
-                                
-                                <TextBox Text="Fill in a additional information" Margin="0,10,0,0"/>
+
+                                    <TextBox Grid.Row="1" Text="Fill in a additional information" Margin="0,5,0,0"/>
+
+                                    <!-- Add Section Button, initially hidden -->
+                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                </Grid>
+
                             </StackPanel>
                         </StackPanel>
 
                         <!--Right Section Column-->
-                        <StackPanel Grid.Column="1" Margin="5,10,0,0">
+                        <StackPanel x:Name="RightSectionStackPanel" Grid.Column="1" Margin="5,10,0,0">
                             <!--Certifications-->
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                            <StackPanel Margin="0,10,0,10">
+                                <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <StackPanel Margin="0,10,0,10">
-                                    
-                                        <TextBox Style="{DynamicResource TitleTextBox}" Text="CERTIFICATIONS"/>
-                                    
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Grid.Column="0" Text="Certification Name" Margin="0,10,0,0"/>
-                                        <TextBox Grid.Column="1" Text="Time" Margin="0,10,0,0" HorizontalAlignment="Right"/>
-                                    </Grid>
-                                </StackPanel>
-                            </Grid>
+
+                                    <TextBox Grid.Row="0" Grid.ColumnSpan="2"  Style="{DynamicResource TitleTextBox}" Text="CERTIFICATIONS"/>
+                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                                        <StackPanel>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="200"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,10,0,0">
+                                                    <TextBox Text="Certification Name"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,10,0,0">
+                                                    <TextBox Text="Time" HorizontalAlignment="Right" MinWidth="100" HorizontalContentAlignment="Right"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="AddWithColumnRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                                    <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                </Grid>
+                            </StackPanel>
 
                             <!--Honors & Awards-->
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                            <StackPanel Margin="0,10,0,10">
+                                <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*"/>
+                                        <ColumnDefinition Width="1*"/>
+                                    </Grid.ColumnDefinitions>
 
-                                <StackPanel Margin="0,10,0,10">
-                                    
-                                        <TextBox Style="{DynamicResource TitleTextBox}" Text="HONORS &amp; AWARDS"/>
-                                    
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="1*"/>
-                                            <ColumnDefinition Width="1*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBox Grid.Column="0" Text="Certification Name" Margin="0,10,0,0"/>
-                                        <TextBox Grid.Column="1" Text="Time" Margin="0,10,0,0" HorizontalAlignment="Right"/>
-                                    </Grid>
-                                </StackPanel>
-                            </Grid>
+
+                                    <TextBox Grid.Row="0" Grid.ColumnSpan="2"  Style="{DynamicResource TitleTextBox}" Text="HONORS &amp; AWARDS"/>
+                                    <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+                                        <StackPanel>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="200"/>
+                                                    <ColumnDefinition Width="1*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <StackPanel Grid.Column="0" Grid.Row="0" Margin="0,10,0,0">
+                                                    <TextBox Text="Award Name"/>
+                                                </StackPanel>
+                                                <StackPanel Grid.Column="1" Grid.Row="0" Margin="0,10,0,0">
+                                                    <TextBox Text="Time" HorizontalAlignment="Right" MinWidth="100" HorizontalContentAlignment="Right"/>
+                                                </StackPanel>
+                                            </Grid>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="AddWithColumnRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                                    <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                </Grid>
+                            </StackPanel>
 
                             <!--INTEREST-->
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                            <StackPanel Margin="0,10,0,10">
+                                <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <!-- Objective Section -->
 
-                                <StackPanel Margin="0,10,0,10">
                                     <TextBox Style="{DynamicResource TitleTextBox}" Text="INTEREST"/>
-                                    <TextBox Grid.Row="1" Text="Interest Name" Margin="0,10,0,16"/>
-                                </StackPanel>
-                            </Grid>
+
+                                    <TextBox Grid.Row="1" Text="Interest Name" Margin="0,5,0,0"/>
+
+                                    <!-- Add Section Button, initially hidden -->
+                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                </Grid>
+
+                            </StackPanel>
 
                         </StackPanel>
                     </Grid>

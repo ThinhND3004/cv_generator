@@ -104,7 +104,7 @@ namespace Template
                 // Replace the frozen brush in the resources with the cloned brush
                 this.Resources["ThemeColorBrush"] = clonedBrush;
             }
-        
+
         }
 
         //---------------------------------------------------------------
@@ -153,6 +153,26 @@ namespace Template
             }
         }
 
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            ExportPopup.IsOpen = true;
+        }
+
+        private void ExportToPdf_Click(object sender, RoutedEventArgs e)
+        {
+            // Implement the logic to export to PDF
+            System.Windows.MessageBox.Show("Exporting to PDF...");
+            ExportPopup.IsOpen = false;
+        }
+
+        private void ExportToWord_Click(object sender, RoutedEventArgs e)
+        {
+            // Implement the logic to export to Word
+            System.Windows.MessageBox.Show("Exporting to Word...");
+            ExportPopup.IsOpen = false;
+        }
+
+
         //---------------------------------------------------------------
         // Overlay for capturing outside clicks
         private void Overlay_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -167,7 +187,7 @@ namespace Template
             Overlay.Visibility = Visibility.Collapsed;
         }
 
-        private void LoadAvaterImage (string avatarPath)
+        private void LoadAvaterImage(string avatarPath)
         {
             string defaultAvatarPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Avatar", "default-avatar.png");
 
@@ -183,7 +203,7 @@ namespace Template
             }
 
             avatarBrush.Stretch = Stretch.UniformToFill;
-            
+
             AvatarEllipse.Fill = avatarBrush;
         }
 
@@ -238,15 +258,42 @@ namespace Template
 
             return null;
         }
+        private T FindChild<T>(DependencyObject parent) where T : FrameworkElement
+        {
+            if (parent == null) return null;
+
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int i = 0; i < childCount; i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                if (child is T typedChild)
+                {
+                    return typedChild;
+                }
+
+                var result = FindChild<T>(child);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+
+            return null;
+        }
         private void Section_MouseEnter(object sender, MouseEventArgs e)
         {
             // Hiển thị nút "Add Section" khi di chuột vào vùng Grid
             if (sender is Grid grid)
             {
                 var addButton = FindChildByUid<Button>(grid, "AddSectionButton");
+                var subInfoAddButton = FindChildByUid<Button>(grid, "SubInformationAddSectionButton");
                 if (addButton != null)
                 {
                     addButton.Visibility = Visibility.Visible;
+                }
+                if (subInfoAddButton != null)
+                {
+                    subInfoAddButton.Visibility = Visibility.Visible;
                 }
             }
         }
@@ -257,9 +304,14 @@ namespace Template
             if (sender is Grid grid)
             {
                 var addButton = FindChildByUid<Button>(grid, "AddSectionButton");
+                var subInfoAddButton = FindChildByUid<Button>(grid, "SubInformationAddSectionButton");
                 if (addButton != null && !addButton.IsMouseOver)
                 {
                     addButton.Visibility = Visibility.Collapsed;
+                }
+                if (subInfoAddButton != null && !subInfoAddButton.IsMouseOver)
+                {
+                    subInfoAddButton.Visibility = Visibility.Collapsed;
                 }
             }
         }
@@ -278,30 +330,97 @@ namespace Template
                         var newSection = CreateNewSection();
                         if (newSection != null)
                         {
-                            System.Windows.MessageBox.Show("Add new section here");
-                            
-                                int index = BodyCVStackPanel.Children.IndexOf(parentStackPanel);
+
+                            int index = BodyCVStackPanel.Children.IndexOf(parentStackPanel);
                             BodyCVStackPanel.Children.Insert(index + 1, newSection);
-                                System.Windows.MessageBox.Show("Index: " + index);
                         }
                         else
                         {
                             System.Windows.MessageBox.Show("New Section create fail");
                         }
                     }
-                    else
-                    {
-                        System.Windows.MessageBox.Show("StackPanel is not a Exist");
-                    }
-                }
-                else
-                {
-                    System.Windows.MessageBox.Show("Gird is not a Exist");
                 }
             }
-            else
+        }
+
+        private void AddLeftSectionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(sender is Button addButton)
             {
-                System.Windows.MessageBox.Show("Sender is not a button");
+                var grid = addButton.Parent as Grid;
+                if(grid != null)
+                {
+                    var parentStackPanel = grid.Parent as StackPanel;
+                    if (parentStackPanel != null)
+                    {
+                        var newSection = CreateNewSection();
+                        if (newSection != null)
+                        {
+                            int index = LeftSectionStackPanel.Children.IndexOf(parentStackPanel);
+                            LeftSectionStackPanel.Children.Insert(index + 1, newSection);
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("New Section create fail");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddRightSectionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button addButton)
+            {
+                var grid = addButton.Parent as Grid;
+                if (grid != null)
+                {
+                    var parentStackPanel = grid.Parent as StackPanel;
+                    if (parentStackPanel != null)
+                    {
+                        var newSection = CreateNewSection();
+                        if (newSection != null)
+                        {
+                            System.Windows.MessageBox.Show("Add new section here");
+
+                            int index = RightSectionStackPanel.Children.IndexOf(parentStackPanel);
+                            RightSectionStackPanel.Children.Insert(index + 1, newSection);
+                            System.Windows.MessageBox.Show("Index: " + index);
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("New Section create fail");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void AddWithColumnRightSectionButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button addButton)
+            {
+                var grid = addButton.Parent as Grid;
+                if (grid != null)
+                {
+                    var parentStackPanel = grid.Parent as StackPanel;
+                    if (parentStackPanel != null)
+                    {
+                        var newSection = CreateSubInfoSectionWithoutSubTitle();
+                        if (newSection != null)
+                        {
+                            System.Windows.MessageBox.Show("Add new section here");
+
+                            int index = RightSectionStackPanel.Children.IndexOf(parentStackPanel);
+                            RightSectionStackPanel.Children.Insert(index + 1, newSection);
+                            System.Windows.MessageBox.Show("Index: " + index);
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("New Section create fail");
+                        }
+                    }
+                }
             }
         }
 
@@ -356,54 +475,150 @@ namespace Template
             return sectionPanel;
         }
 
-
-        //---------------------------------------------------------------
-        //Edit text block
-        private void DisplayTextBlock_MouseDown(object sender, MouseButtonEventArgs e)
+        private void SubInformationAddSectionButton_Click(object sender, RoutedEventArgs e)
         {
-            if (e.ClickCount == 2)
+            // Add a new section below the current section
+            if (sender is Button addButton)
             {
-                var textBlock = sender as TextBlock;
-                var parent = textBlock?.TemplatedParent as ContentControl;
-                var editTextBox = (TextBox)parent.Template.FindName("EditTextBox", parent);
-
-                if (editTextBox != null)
+                var grid = addButton.Parent as Grid;
+                if (grid != null)
                 {
-                    editTextBox.Visibility = Visibility.Visible;
-                    textBlock.Visibility = Visibility.Collapsed;
-                    editTextBox.Focus();
-                    editTextBox.SelectAll();
+                    var parentStackPanel = FindChild<StackPanel>(grid);
+                    if (parentStackPanel != null)
+                    {
+                        var newSection = CreateSubInfoSection();
+                        if (newSection != null)
+                        {
+                            System.Windows.MessageBox.Show("Add new section here");
+
+                            parentStackPanel.Children.Insert(parentStackPanel.Children.Count, newSection);
+                            System.Windows.MessageBox.Show("Index: " + parentStackPanel.Children.Count);
+                        }
+                        else
+                        {
+                            System.Windows.MessageBox.Show("New Section create fail");
+                        }
+                    }
                 }
             }
         }
 
-        private void EditTextBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            var textBox = sender as TextBox;
-            var parent = textBox?.TemplatedParent as ContentControl;
-            var displayTextBlock = (TextBlock)parent.Template.FindName("DisplayTextBlock", parent);
 
-            if (displayTextBlock != null)
+        private StackPanel CreateSubInfoSection()
+        {
+            var subInfoPanel = new StackPanel { Margin = new Thickness(0, 10, 0, 0) };
+
+            var grid = new Grid();
+
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            var leftStackPanel = new StackPanel { Margin = new Thickness(0, 1, 0, 0) };
+            var rightStackPanel = new StackPanel { Margin = new Thickness(0, 1, 0, 0) };
+
+            var positionTextBox = new TextBox
             {
-                displayTextBlock.Visibility = Visibility.Visible;
-                textBox.Visibility = Visibility.Collapsed;
-            }
+                Text = "Position",
+                FontWeight = FontWeights.Bold,
+                Foreground = (Brush)FindResource("ThemeColorBrush")
+            };
+            var fromToTextBox = new TextBox { Text = "From - To" };
+
+            var organizationTextBox = new TextBox
+            {
+                Text = "Organization Name",
+                FontWeight = FontWeights.Bold,
+                Foreground = (Brush)FindResource("ThemeColorBrush")
+            };
+            var activityTextBox = new TextBox { Text = "Activity description" };
+
+            leftStackPanel.Children.Add(positionTextBox);
+            leftStackPanel.Children.Add(fromToTextBox);
+
+            rightStackPanel.Children.Add(organizationTextBox);
+            rightStackPanel.Children.Add(activityTextBox);
+
+            Grid.SetColumn(leftStackPanel, 0);
+            Grid.SetRow(leftStackPanel, 0);
+            Grid.SetColumn(rightStackPanel, 1);
+            Grid.SetRow(rightStackPanel, 0);
+
+            grid.Children.Add(leftStackPanel);
+            grid.Children.Add(rightStackPanel);
+
+            subInfoPanel.Children.Add(grid);
+
+            return subInfoPanel;
         }
 
-        private void EditTextBox_KeyDown(object sender, KeyEventArgs e)
+        private StackPanel CreateSubInfoSectionWithoutSubTitle()
         {
-            if (e.Key == Key.Enter)
-            {
-                var textBox = sender as TextBox;
-                var parent = textBox?.TemplatedParent as ContentControl;
-                var displayTextBlock = (TextBlock)parent.Template.FindName("DisplayTextBlock", parent);
+            //var subInfoPanel = new StackPanel { Margin = new Thickness(0, 10, 0, 0) };
 
-                if (displayTextBlock != null)
-                {
-                    displayTextBlock.Visibility = Visibility.Visible;
-                    textBox.Visibility = Visibility.Collapsed;
-                }
-            }
+            //var grid = new Grid();
+
+            //grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) });
+            //grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            //var leftStackPanel = new StackPanel { Margin = new Thickness(0, 1, 0, 0) };
+            //var rightStackPanel = new StackPanel { Margin = new Thickness(0, 1, 0, 0) };
+
+            //var fromToTextBox = new TextBox { Text = "From - To" };
+
+            //var activityTextBox = new TextBox { Text = "Activity description" };
+
+            //leftStackPanel.Children.Add(fromToTextBox);
+
+            //rightStackPanel.Children.Add(activityTextBox);
+
+            //Grid.SetColumn(leftStackPanel, 0);
+            //Grid.SetRow(leftStackPanel, 0);
+            //Grid.SetColumn(rightStackPanel, 1);
+            //Grid.SetRow(rightStackPanel, 0);
+
+            //grid.Children.Add(leftStackPanel);
+            //grid.Children.Add(rightStackPanel);
+
+            //subInfoPanel.Children.Add(grid);
+
+            //return subInfoPanel;
+
+            var subInfoPanel = new StackPanel { Margin = new Thickness(0, 10, 0, 0) };
+
+            var grid = new Grid();
+
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(200) });
+            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+
+            var leftStackPanel = new StackPanel { Margin = new Thickness(0, 1, 0, 0) };
+            var rightStackPanel = new StackPanel { Margin = new Thickness(0, 1, 0, 0) };
+
+            var fromToTextBox = new TextBox { Text = "From - To" };
+
+            var activityTextBox = new TextBox { Text = "Activity description" };
+
+            leftStackPanel.Children.Add(fromToTextBox);
+
+            rightStackPanel.Children.Add(activityTextBox);
+
+            Grid.SetColumn(leftStackPanel, 0);
+            Grid.SetRow(leftStackPanel, 0);
+            Grid.SetColumn(rightStackPanel, 1);
+            Grid.SetRow(rightStackPanel, 0);
+
+            grid.Children.Add(leftStackPanel);
+            grid.Children.Add(rightStackPanel);
+
+            subInfoPanel.Children.Add(grid);
+
+            return subInfoPanel;
         }
+
+
+
+        //---------------------------------------------------------------        
     }
 }
