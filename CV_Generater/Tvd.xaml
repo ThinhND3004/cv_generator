@@ -8,8 +8,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Padding="10" Grid.Column="0" Background="#2D3E50">
-            <StackPanel>
+        <Border Padding="20" Grid.Column="0" Background="#2D3E50">
+            <StackPanel Background="#2D3E50">
                 <StackPanel HorizontalAlignment="Center">
                     <Border BorderThickness="1" BorderBrush="Gray" Width="100" Height="100" Margin="0,10">
                         <Image x:Name="ProfileImage" Stretch="Uniform"/>
@@ -17,36 +17,34 @@
                     <Button Content="Upload Photo" Width="100" Margin="0,10,0,0" Click="UploadPhoto_Click"/>
                 </StackPanel>
 
-                <TextBlock Text="Personal Details" FontWeight="Bold" FontSize="16" Foreground="White" Margin="0,10"/>
-
-                <TextBlock x:Name="PersonalInfoLabel" Text="Nguyen Van A" FontWeight="Bold" FontSize="16" Foreground="White" 
-                           MouseDown="PersonalInfoLabel_MouseDown" Margin="0,5"/>
+                <TextBlock x:Name="PersonalInfoLabel" Text="Nguyen Van A" FontWeight="Bold" FontSize="16" Foreground="White"
+               MouseDown="PersonalInfoLabel_MouseDown" Margin="0,5"/>
                 <TextBox x:Name="PersonalInfoTextBox" Visibility="Collapsed" LostFocus="PersonalInfoTextBox_LostFocus"/>
 
-                <TextBlock x:Name="PositionLabel" Text="Back-end Developer" FontWeight="Bold" FontSize="16" 
-                           Foreground="White" MouseDown="PositionLabel_MouseDown" Margin="0,5"/>
+                <TextBlock x:Name="PositionLabel" Text="Back-end Developer" FontWeight="Bold" FontSize="10" Foreground="White"
+               MouseDown="PositionLabel_MouseDown" Margin="0,5,0,30"/>
                 <TextBox x:Name="PositionTextBox" Visibility="Collapsed" LostFocus="PositionTextBox_LostFocus"/>
 
-                <TextBlock x:Name="EmailLabel" Text="email@example.com" Foreground="White" 
-                           MouseDown="EmailLabel_MouseDown" Margin="0,5"/>
+                <TextBlock x:Name="EmailLabel" Text="email@example.com" Foreground="White"
+               MouseDown="EmailLabel_MouseDown" Margin="0,5"/>
                 <TextBox x:Name="EmailTextBox" Visibility="Collapsed" LostFocus="EmailTextBox_LostFocus"/>
 
-                <TextBlock x:Name="PhoneLabel" Text="123-456-7890" Foreground="White" 
-                           MouseDown="PhoneLabel_MouseDown" Margin="0,5"/>
+                <TextBlock x:Name="PhoneLabel" Text="123-456-7890" Foreground="White"
+               MouseDown="PhoneLabel_MouseDown" Margin="0,5"/>
                 <TextBox x:Name="PhoneTextBox" Visibility="Collapsed" LostFocus="PhoneTextBox_LostFocus"/>
 
-                <TextBlock x:Name="AddressLabel" Text="123 Street, City, Country" Foreground="White" 
-                           MouseDown="AddressLabel_MouseDown" Margin="0,5"/>
+                <TextBlock x:Name="AddressLabel" Text="123 Street, City, Country" Foreground="White"
+               MouseDown="AddressLabel_MouseDown" Margin="0,5"/>
                 <TextBox x:Name="AddressTextBox" Visibility="Collapsed" LostFocus="AddressTextBox_LostFocus"/>
             </StackPanel>
         </Border>
 
         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="10">
             <StackPanel>
-                <TextBlock Text="Professional Experience" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                    <StackPanel x:Name="SubStackPanel" >
+                        <TextBlock Text="Professional Experience" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
                         <TextBlock x:Name="CompanyNameLabel" Text="Full Group Inc." FontWeight="Bold" FontSize="16" Margin="0,5"
                            MouseDown="CompanyNameLabel_MouseDown"/>
                         <TextBox x:Name="CompanyNameTextBox" Visibility="Collapsed" LostFocus="CompanyNameTextBox_LostFocus"/>
@@ -55,16 +53,20 @@
                            MouseDown="YearsLabel_MouseDown"/>
                         <TextBox x:Name="YearsTextBox" Visibility="Collapsed" LostFocus="YearsTextBox_LostFocus"/>
 
-                        <TextBlock x:Name="DescriptionLabel" Text="Designed unit test case." FontSize="12" Margin="0,5"
-                           MouseDown="DescriptionLabel_MouseDown"/>
+                        <TextBlock x:Name="DescriptionLabel" Text="Designed unit test case." FontSize="12" Margin="0,0,0,5"                           MouseDown="DescriptionLabel_MouseDown" />
                         <TextBox x:Name="DescriptionTextBox" Visibility="Collapsed" LostFocus="DescriptionTextBox_LostFocus"/>
+
+                        <StackPanel Width="111" HorizontalAlignment="Left" >
+                            <Button Content="Add New Line" Click="AddNewLineButton_Click"/>
+                            <Button Content="Add New Bold Line" Click="AddNewBoldLineButton_Click" />
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
 
-                <TextBlock Text="Education" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
 
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <StackPanel>
+                        <TextBlock Text="Education" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
                         <TextBlock x:Name="DegreeLabel" Text="FPT University" FontWeight="Bold" FontSize="16" Margin="0,5"
                            MouseDown="DegreeLabel_MouseDown"/>
                         <TextBox x:Name="DegreeTextBox" Visibility="Collapsed" LostFocus="DegreeTextBox_LostFocus"/>
@@ -72,8 +74,32 @@
                         <TextBlock x:Name="DegreeYearsLabel" Text="2022-2024" FontSize="12" Margin="0,5"
                            MouseDown="DegreeYearsLabel_MouseDown"/>
                         <TextBox x:Name="DegreeYearsTextBox" Visibility="Collapsed" LostFocus="DegreeYearsTextBox_LostFocus"/>
+
+                        <StackPanel>
+                            <Button Content="Add New Line" Click="AddNewLineButton_Click"/>
+                            <Button Content="Add New Bold Line" Click="AddNewBoldLineButton_Click" />
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
+
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock Text="Skill" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
+                        <TextBlock x:Name="SkillLabel" Text="Skill here" FontSize="12" Margin="0,5" MouseDown="SkillLabel_MouseDown"/>
+                        <TextBox x:Name="SkillTextBox" Visibility="Collapsed" LostFocus="SkillTextBox_LostFocus"/>
+                        <StackPanel>
+                            <Button Content="Add New Line" Click="AddNewLineButton_Click"/>
+                            <Button Content="Add New Bold Line" Click="AddNewBoldLineButton_Click" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel x:Name="ButtonPanel" Margin="0 10 100 0" HorizontalAlignment="Left">
+                    <Button Content="Add New StackPanel With Buttons" Click="AddNewStackPanelWithButtonsButton_Click"/>
+                </StackPanel>
+
+
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="0 50 10 0">
                     <Button Content="Generate to PDF" Width="120" Click="GenerateToPdf_Click" Margin="0 0 10 0"/>
                     <Button Content="Generate to Docs" Width="120"/>

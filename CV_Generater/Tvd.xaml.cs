@@ -2,9 +2,11 @@
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace CV_Generater
@@ -188,6 +190,362 @@ namespace CV_Generater
             DegreeYearsTextBox.Visibility = Visibility.Collapsed;
             DegreeYearsLabel.Visibility = Visibility.Visible;
         }
+        private void SkillLabel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            SkillLabel.Visibility = Visibility.Collapsed;
+            SkillTextBox.Text = SkillLabel.Text;
+            SkillTextBox.Visibility = Visibility.Visible;
+            SkillTextBox.Focus();
+        }
+
+
+        private void SkillTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SkillLabel.Text = SkillTextBox.Text;
+            SkillTextBox.Visibility = Visibility.Collapsed;
+            SkillLabel.Visibility = Visibility.Visible;
+        }
+
+
+        private void AddNewLine(StackPanel targetStackPanel, Button clickedButton)
+        {
+            StackPanel textWithButtonPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            TextBlock newTextBlock = new TextBlock
+            {
+                Text = "Click to edit",
+                FontSize = 12,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            Button removeButton = new Button
+            {
+                Content = "X",
+                Width = 20,
+                Height = 20,
+                Margin = new Thickness(5, 0, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            removeButton.Click += (s, e) =>
+            {
+                targetStackPanel.Children.Remove(textWithButtonPanel);
+            };
+
+            TextBox newTextBox = new TextBox
+            {
+                Visibility = Visibility.Collapsed,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            newTextBlock.MouseDown += (s, e) =>
+            {
+                newTextBlock.Visibility = Visibility.Collapsed;
+                newTextBox.Text = newTextBlock.Text;
+                newTextBox.Visibility = Visibility.Visible;
+                newTextBox.Focus();
+            };
+
+            newTextBox.LostFocus += (s, e) =>
+            {
+                newTextBlock.Text = newTextBox.Text;
+                newTextBox.Visibility = Visibility.Collapsed;
+                newTextBlock.Visibility = Visibility.Visible;
+            };
+
+            textWithButtonPanel.Children.Add(newTextBlock);
+            textWithButtonPanel.Children.Add(removeButton);
+            textWithButtonPanel.Children.Add(newTextBox);
+
+            targetStackPanel.Children.Add(textWithButtonPanel);
+        }
+
+
+        private void AddNewLineButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            StackPanel parentStackPanel = (StackPanel)((FrameworkElement)sender).Parent;
+            AddNewLine(parentStackPanel, clickedButton);
+        }
+
+        private void AddNewBoldLine(StackPanel targetStackPanel, Button clickedButton)
+        {
+            
+
+            StackPanel textWithButtonPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            TextBlock newTextBlock = new TextBlock
+            {
+                Text = "Click to edit",
+                FontWeight = FontWeights.Bold,
+                FontSize = 16,
+                Margin = new Thickness(0, 20, 0, 5)
+            };
+
+            Button removeButton = new Button
+            {
+                Content = "X",
+                Width = 20,
+                Height = 20,
+                Margin = new Thickness(5, 0, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            removeButton.Click += (s, e) =>
+            {
+                targetStackPanel.Children.Remove(textWithButtonPanel);
+            };
+
+            TextBox newTextBox = new TextBox
+            {
+                Visibility = Visibility.Collapsed,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            newTextBlock.MouseDown += (s, e) =>
+            {
+                newTextBlock.Visibility = Visibility.Collapsed;
+                newTextBox.Text = newTextBlock.Text;
+                newTextBox.Visibility = Visibility.Visible;
+                newTextBox.Focus();
+            };
+
+            newTextBox.LostFocus += (s, e) =>
+            {
+                newTextBlock.Text = newTextBox.Text;
+                newTextBox.Visibility = Visibility.Collapsed;
+                newTextBlock.Visibility = Visibility.Visible;
+            };
+
+            textWithButtonPanel.Children.Add(newTextBlock);
+            textWithButtonPanel.Children.Add(removeButton);
+            textWithButtonPanel.Children.Add(newTextBox);
+
+            targetStackPanel.Children.Add(textWithButtonPanel);
+        }
+
+        private void AddNewBoldLineButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            StackPanel parentStackPanel = (StackPanel)((FrameworkElement)sender).Parent;
+            AddNewBoldLine(parentStackPanel, clickedButton);
+        }
+
+
+        private void AddNewStackPanelWithButtons(StackPanel parentStackPanel, Button clickedButton)
+        {
+            StackPanel newStackPanel = new StackPanel
+            {
+                Orientation = Orientation.Vertical,
+                Margin = new Thickness(0, 10, 0, 10)
+            };
+
+            TextBlock newTextBlock = new TextBlock
+            {
+                Text = "Click to edit",
+                FontWeight = FontWeights.Bold,
+                FontSize = 20,
+                Margin = new Thickness(0, 20, 0, 5)
+            };
+
+            TextBox newTextBox = new TextBox
+            {
+                Text = newTextBlock.Text,
+                Visibility = Visibility.Collapsed,
+                FontWeight = FontWeights.Bold,
+                FontSize = 20,
+                Margin = new Thickness(0, 20, 0, 5)
+            };
+
+            newTextBlock.MouseDown += (s, e) =>
+            {
+                newTextBlock.Visibility = Visibility.Collapsed;
+                newTextBox.Visibility = Visibility.Visible;
+                newTextBox.Focus();
+            };
+
+            newTextBox.LostFocus += (s, e) =>
+            {
+                newTextBlock.Text = newTextBox.Text;
+                newTextBox.Visibility = Visibility.Collapsed;
+                newTextBlock.Visibility = Visibility.Visible;
+            };
+
+            newStackPanel.Children.Add(newTextBlock);
+            newStackPanel.Children.Add(newTextBox);
+
+            Button addNewLineButton = new Button
+            {
+                Content = "Add New Line",
+                Margin = new Thickness(0, 5, 0, 5),
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+            addNewLineButton.Click += (sender, e) => AddNewLineWithSlackPanel(newStackPanel, addNewLineButton);
+
+            Button addNewBoldLineButton = new Button
+            {
+                Content = "Add New Bold Line",
+                Margin = new Thickness(0, 5, 0, 5),
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+            addNewBoldLineButton.Click += (sender, e) => AddNewBoldLineWithSlackPanel(newStackPanel, addNewBoldLineButton);
+
+            newStackPanel.Children.Add(addNewLineButton);
+            newStackPanel.Children.Add(addNewBoldLineButton);
+
+            Button removeButton = new Button
+            {
+                Content = "Remove StackPanel",
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+            removeButton.Click += (sender, e) => RemoveStackPanel(newStackPanel);
+
+            newStackPanel.Children.Add(removeButton);
+
+            int insertIndex = parentStackPanel.Children.IndexOf(clickedButton);
+            parentStackPanel.Children.Insert(insertIndex, newStackPanel);
+        }
+
+        private void AddNewLineWithSlackPanel(StackPanel targetStackPanel, Button clickedButton)
+        {
+            StackPanel textWithButtonPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            TextBlock newTextBlock = new TextBlock
+            {
+                Text = "Click to edit",
+                FontSize = 12,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            Button removeButton = new Button
+            {
+                Content = "X",
+                Width = 20,
+                Height = 20,
+                Margin = new Thickness(5, 0, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            removeButton.Click += (s, e) =>
+            {
+                targetStackPanel.Children.Remove(textWithButtonPanel);
+            };
+
+            TextBox newTextBox = new TextBox
+            {
+                Visibility = Visibility.Collapsed,
+                Margin = new Thickness(0, 5, 0, 5)
+            };
+
+            newTextBlock.MouseDown += (s, e) =>
+            {
+                newTextBlock.Visibility = Visibility.Collapsed;
+                newTextBox.Text = newTextBlock.Text;
+                newTextBox.Visibility = Visibility.Visible;
+                newTextBox.Focus();
+            };
+
+            newTextBox.LostFocus += (s, e) =>
+            {
+                newTextBlock.Text = newTextBox.Text;
+                newTextBox.Visibility = Visibility.Collapsed;
+                newTextBlock.Visibility = Visibility.Visible;
+            };
+
+            textWithButtonPanel.Children.Add(newTextBlock);
+            textWithButtonPanel.Children.Add(removeButton);
+            textWithButtonPanel.Children.Add(newTextBox);
+
+            targetStackPanel.Children.Add(textWithButtonPanel);
+        }
+
+        private void AddNewBoldLineWithSlackPanel(StackPanel targetStackPanel, Button clickedButton)
+        {
+            StackPanel textWithButtonPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(0, 20, 0, 5)
+            };
+
+            TextBlock newTextBlock = new TextBlock
+            {
+                Text = "Click to edit",
+                FontWeight = FontWeights.Bold,
+                FontSize = 16,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            Button removeButton = new Button
+            {
+                Content = "X",
+                Width = 20,
+                Height = 20,
+                Margin = new Thickness(5, 0, 0, 0),
+                HorizontalAlignment = HorizontalAlignment.Left
+            };
+
+            removeButton.Click += (s, e) =>
+            {
+                targetStackPanel.Children.Remove(textWithButtonPanel);
+            };
+
+            TextBox newTextBox = new TextBox
+            {
+                Visibility = Visibility.Collapsed,
+                Margin = new Thickness(0, 20, 0, 5)
+            };
+
+            newTextBlock.MouseDown += (s, e) =>
+            {
+                newTextBlock.Visibility = Visibility.Collapsed;
+                newTextBox.Text = newTextBlock.Text;
+                newTextBox.Visibility = Visibility.Visible;
+                newTextBox.Focus();
+            };
+
+            newTextBox.LostFocus += (s, e) =>
+            {
+                newTextBlock.Text = newTextBox.Text;
+                newTextBox.Visibility = Visibility.Collapsed;
+                newTextBlock.Visibility = Visibility.Visible;
+            };
+
+            textWithButtonPanel.Children.Add(newTextBlock);
+            textWithButtonPanel.Children.Add(removeButton);
+            textWithButtonPanel.Children.Add(newTextBox);
+
+            targetStackPanel.Children.Add(textWithButtonPanel);
+        }
+
+        private void RemoveStackPanel(StackPanel stackPanel)
+        {
+            StackPanel parentStackPanel = (StackPanel)stackPanel.Parent;
+            parentStackPanel.Children.Remove(stackPanel);
+        }
+
+        private void AddNewStackPanelWithButtonsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button clickedButton = (Button)sender;
+            StackPanel parentStackPanel = (StackPanel)((FrameworkElement)sender).Parent;
+            AddNewStackPanelWithButtons(parentStackPanel, clickedButton);
+        }
+
+
+
+
+
 
         private void GenerateToPdf_Click(object sender, RoutedEventArgs e)
         {
