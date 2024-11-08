@@ -1,0 +1,63 @@
+﻿<Window x:Class="CV_Generator.HomeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CV_Generator"
+        mc:Ignorable="d"
+        Height="650" 
+        Width="1000" 
+        WindowStartupLocation="CenterScreen" 
+        AllowsTransparency="True" 
+        Background="Transparent" 
+        WindowStyle="None" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#dcb485" Padding="30" CornerRadius="25,25,0,0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- StackPanel for Image and Greeting Label -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="0">
+                    <Image Source="/Images/user.png" Width="50" Height="50" Margin="0,0,20,0"/>
+                    <Label x:Name="HelloAccountLabel" Content="Hello, User" FontSize="24" VerticalAlignment="Center" FontWeight="ExtraBold"/>
+                </StackPanel>
+
+                <!-- StackPanel for Buttons on the Right -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="1">
+                    <Button Content="Settings" Width="150" Height="50" FontSize="25" FontWeight="SemiBold" Background="#b38b60" Margin="0,0,10,0" Foreground="White"/>
+                    <Button Content="Log Out" Width="150" Height="50" FontSize="25" FontWeight="SemiBold" Background="#b38b60" Foreground="White" Click="Button_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Main Content Border -->
+        <Border Grid.Row="1" Background="#f1debc" CornerRadius="0 0 25 25" Padding="20">
+            <StackPanel>
+                <!-- Label to show created CV count -->
+                <Label x:Name="CountCreatedCVLabel" Content="You have created 5 CV(s)!" FontSize="20" FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                <!-- DataGrid for displaying CV data -->
+                <DataGrid x:Name="CVDataGrid" Height="187" Width="400" AutoGenerateColumns="False" TabIndex="7">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Width="40" Binding="{Binding Id}" />
+                        <DataGridTextColumn Header="CV Name" Width="200" Binding="{Binding Name}" />
+                        <DataGridTextColumn Header="Create At" Width="150" Binding="{Binding CreateAt}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- StackPanel for buttons below the DataGrid -->
+                <StackPanel Orientation="Horizontal" Height="200" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,20,0,0">
+                    <Button x:Name="AddCVButton" Content="Add CV" Width="150" Height="50" FontSize="20" FontWeight="SemiBold" Background="#b38b60" Foreground="White" Margin="10,0" Click="AddCVButton_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

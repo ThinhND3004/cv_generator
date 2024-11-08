@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using CV_Generator.BLL.Services;
+using CV_Generator.DAL.Entities;
+using Microsoft.Win32;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using System.IO;
@@ -8,11 +10,14 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace CV_Generater
 {
-    public partial class Tvd : Window
+    public partial class CVTemplate1 : Window
     {
+        public Account UserCreateCV { get; set; }
+        private CurViService _cvService = new();
         private TextBox inputTextBox;
         private Button confirmButton;
         private Button cancelButton;
@@ -24,7 +29,7 @@ namespace CV_Generater
             public XFont Font { get; set; }
             public XBrush Brush { get; set; }
         }
-        public Tvd()
+        public CVTemplate1()
         {
             InitializeComponent();
         }
@@ -831,8 +836,18 @@ namespace CV_Generater
                 using (FileStream stream = new FileStream(filename, FileMode.Create, FileAccess.Write))
                 {
                     document.Save(stream);
+                    CurriculumVitae newCV = new();
+                    newCV.Name = System.IO.Path.GetFileName(saveFileDialog.FileName);
+                    newCV.CreateAt = DateTime.Now;
+                    newCV.CreateBy = UserCreateCV.Id;
+                    _cvService.CreateCV(newCV); 
                 }
             }
+
+
+            
+
+
 
 
             document.Close();

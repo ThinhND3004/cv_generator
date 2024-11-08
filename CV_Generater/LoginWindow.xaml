@@ -1,0 +1,64 @@
+﻿<Window x:Class="CV_Generater.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+        mc:Ignorable="d" 
+        Height="650" 
+        Width="1000" 
+        WindowStartupLocation="CenterScreen" 
+        AllowsTransparency="True" 
+        Background="Transparent" 
+        WindowStyle="None">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Background="#f1debc" Padding="30" CornerRadius="25 0 0 25">
+            <StackPanel VerticalAlignment="Center">
+                <Image Source="./images/14678257.png" Width="160" Height="160" Margin="0 0 0 40"/>
+                <TextBlock Text="Who Are You?" TextAlignment="Center" FontWeight="SemiBold" FontSize="28" Foreground="#4c2113"/>
+                <TextBlock Text="Tell me right now or get out of here!!!" TextAlignment="Center" FontWeight="SemiBold" FontSize="16" Foreground="#4c2113"/>
+                <Button Style="{StaticResource buttonBrown}">
+                    <fa:ImageAwesome Icon="AngleRight" Width="25" Height="25" Foreground="White" Margin="3 0 0 0"/>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Column="1" Padding="20" Background="White" CornerRadius="0 25 25 0">
+            <Grid>
+                <Image Source="/Images/close1.jpg" Width="25" Margin="0,4,10,0" Style="{StaticResource iconApp}" MouseDown="CloseClick"/>
+                <Image Source="/Images/minimize-icon-3.png" Width="20" Margin="0 7 40 0" Style="{StaticResource iconApp}" MouseDown="MinimizeClick"/>
+                <Label Content="Log In:" FontSize="70" FontWeight="ExtraBold" HorizontalAlignment="Center" Margin="100" Foreground="#4c2113"/>
+
+                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Text="Username: " Style="{StaticResource text}"/>
+                    <TextBlock Grid.Row="1" Text="Password: " Style="{StaticResource text}"/>
+
+                    <TextBox x:Name="EmailTextBox" Grid.Column="1" Grid.Row="0" Style="{StaticResource textBox}"/>
+                    <TextBox x:Name="PasswordTextBox" Grid.Column="1" Grid.Row="1" Style="{StaticResource textBox}"/>
+                    
+                    
+                </Grid>
+
+
+                <Button x:Name="LoginButton" Content="Go" Width="150" Height="50" FontSize="25" FontWeight="SemiBold" Background="#b38b60" Margin="0 350 0 0" Foreground="White" Click="LoginButton_Click"/>
+
+
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

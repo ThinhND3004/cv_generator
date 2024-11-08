@@ -25,6 +25,7 @@ namespace Template
         public Template1Window()
         {
             InitializeComponent();
+
             PopulateFontSelector();
 
             // Set default font to Arial if it's available in the list
