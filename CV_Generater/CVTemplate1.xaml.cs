@@ -962,5 +962,10 @@ namespace CV_Generater
                 MessageBox.Show("Please enter a valid entry.");
             }
         }
+
+        private void GenerateToDocx_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
