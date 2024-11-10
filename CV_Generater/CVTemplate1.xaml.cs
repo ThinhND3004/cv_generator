@@ -1005,10 +1005,10 @@ namespace CV_Generater
                     body.Append(CreateInfoParagraph("Years:", YearsLabel.Text));
                     body.Append(CreateInfoParagraph("Description:", DescriptionLabel.Text));
 
-                    // Education Section
-                    body.Append(CreateSectionHeader("Education"));
-                    body.Append(CreateInfoParagraph("Degree:", DegreeLabel.Text));
-                    body.Append(CreateInfoParagraph("Years:", DegreeYearsLabel.Text));
+                    //// Education Section
+                    //body.Append(CreateSectionHeader("Education"));
+                    //body.Append(CreateInfoParagraph("Degree:", DegreeLabel.Text));
+                    //body.Append(CreateInfoParagraph("Years:", DegreeYearsLabel.Text));
 
                     // Save the document
                     mainPart.Document.Append(body);
@@ -1019,6 +1019,26 @@ namespace CV_Generater
 
             }
 
+        }
+
+        // Helper method to create section headers
+        private Paragraph CreateSectionHeader(string headerText)
+        {
+            Paragraph headerParagraph = new Paragraph(new Run(new Text(headerText)));
+            headerParagraph.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Left });
+            headerParagraph.ParagraphProperties.Append(new Bold());
+            return headerParagraph;
+        }
+
+        // Helper method to create info paragraphs
+        private Paragraph CreateInfoParagraph(string label, string info)
+        {
+            Run labelRun = new Run(new Text(label + " "));
+            Run infoRun = new Run(new Text(info));
+            Paragraph paragraph = new Paragraph();
+            paragraph.Append(labelRun);
+            paragraph.Append(infoRun);
+            return paragraph;
         }
 
 
