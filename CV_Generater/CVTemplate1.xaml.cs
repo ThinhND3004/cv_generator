@@ -1,5 +1,7 @@
 ﻿using CV_Generator.BLL.Services;
 using CV_Generator.DAL.Entities;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
@@ -496,7 +498,7 @@ namespace CV_Generater
 
             if (!string.IsNullOrEmpty(entry))
             {
-              
+
                 // Tạo một StackPanel để chứa TextBlock và nút xóa
                 StackPanel entryPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 5, 0, 5) };
 
@@ -840,12 +842,12 @@ namespace CV_Generater
                     newCV.Name = System.IO.Path.GetFileName(saveFileDialog.FileName);
                     newCV.CreateAt = DateTime.Now;
                     newCV.CreateBy = UserCreateCV.Id;
-                    _cvService.CreateCV(newCV); 
+                    _cvService.CreateCV(newCV);
                 }
             }
 
 
-            
+
 
 
 
@@ -909,7 +911,7 @@ namespace CV_Generater
 
             if (!string.IsNullOrEmpty(entry))
             {
-                
+
                 // Tạo một StackPanel để chứa TextBlock và nút xóa
                 StackPanel entryPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 5, 0, 5) };
 
@@ -962,5 +964,83 @@ namespace CV_Generater
                 MessageBox.Show("Please enter a valid entry.");
             }
         }
+
+        private void GenerateToDocx_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Word Document (*.docx)|*.docx",
+                FileName = "Generated_CV.docx"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                // Create a new Word document
+                using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filePath, DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
+                {
+                    // Add a main document part
+                    MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+                    mainPart.Document = new Document();
+                    Body body = new Body();
+
+                    // Add Title
+                    Paragraph titleParagraph = new Paragraph(new Run(new Text("CV")));
+                    titleParagraph.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Center });
+                    body.Append(titleParagraph);
+
+                    // Personal Information Section
+                    body.Append(CreateSectionHeader("Personal Information"));
+                    body.Append(CreateInfoParagraph("Name:", PersonalInfoLabel.Text));
+                    body.Append(CreateInfoParagraph("Position:", PositionLabel.Text));
+                    body.Append(CreateInfoParagraph("Email:", EmailLabel.Text));
+                    body.Append(CreateInfoParagraph("Phone:", PhoneLabel.Text));
+                    body.Append(CreateInfoParagraph("Address:", AddressLabel.Text));
+
+                    // Professional Experience Section
+                    body.Append(CreateSectionHeader("Professional Experience"));
+                    body.Append(CreateInfoParagraph("Company:", CompanyNameLabel.Text));
+                    body.Append(CreateInfoParagraph("Position:", PositionLabel.Text));
+                    body.Append(CreateInfoParagraph("Years:", YearsLabel.Text));
+                    body.Append(CreateInfoParagraph("Description:", DescriptionLabel.Text));
+
+                    //// Education Section
+                    //body.Append(CreateSectionHeader("Education"));
+                    //body.Append(CreateInfoParagraph("Degree:", DegreeLabel.Text));
+                    //body.Append(CreateInfoParagraph("Years:", DegreeYearsLabel.Text));
+
+                    // Save the document
+                    mainPart.Document.Append(body);
+                    mainPart.Document.Save();
+                }
+
+                MessageBox.Show("DOCX generated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
+
+        }
+
+        // Helper method to create section headers
+        private Paragraph CreateSectionHeader(string headerText)
+        {
+            Paragraph headerParagraph = new Paragraph(new Run(new Text(headerText)));
+            headerParagraph.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Left });
+            headerParagraph.ParagraphProperties.Append(new Bold());
+            return headerParagraph;
+        }
+
+        // Helper method to create info paragraphs
+        private Paragraph CreateInfoParagraph(string label, string info)
+        {
+            Run labelRun = new Run(new Text(label + " "));
+            Run infoRun = new Run(new Text(info));
+            Paragraph paragraph = new Paragraph();
+            paragraph.Append(labelRun);
+            paragraph.Append(infoRun);
+            return paragraph;
+        }
+
+
     }
 }
