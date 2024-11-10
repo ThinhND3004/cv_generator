@@ -1,16 +1,21 @@
 ﻿using CV_Generator.BLL.Services;
 using CV_Generator.DAL.Entities;
+using DocumentFormat.OpenXml.Packaging;
 using Microsoft.Win32;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using System.IO;
 using System.Reflection;
+using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace CV_Generater
 {
@@ -965,7 +970,60 @@ namespace CV_Generater
 
         private void GenerateToDocx_Click(object sender, RoutedEventArgs e)
         {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Word Document (*.docx)|*.docx",
+                FileName = "Generated_CV.docx"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+
+                // Create a new Word document
+                using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filePath, DocumentFormat.OpenXml.WordprocessingDocumentType.Document))
+                {
+                    // Add a main document part
+                    MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
+                    mainPart.Document = new Document();
+                    Body body = new Body();
+
+                    // Add Title
+                    Paragraph titleParagraph = new Paragraph(new Run(new Text("CV")));
+                    titleParagraph.ParagraphProperties = new ParagraphProperties(new Justification() { Val = JustificationValues.Center });
+                    body.Append(titleParagraph);
+
+                    // Personal Information Section
+                    body.Append(CreateSectionHeader("Personal Information"));
+                    body.Append(CreateInfoParagraph("Name:", PersonalInfoLabel.Text));
+                    body.Append(CreateInfoParagraph("Position:", PositionLabel.Text));
+                    body.Append(CreateInfoParagraph("Email:", EmailLabel.Text));
+                    body.Append(CreateInfoParagraph("Phone:", PhoneLabel.Text));
+                    body.Append(CreateInfoParagraph("Address:", AddressLabel.Text));
+
+                    // Professional Experience Section
+                    body.Append(CreateSectionHeader("Professional Experience"));
+                    body.Append(CreateInfoParagraph("Company:", CompanyNameLabel.Text));
+                    body.Append(CreateInfoParagraph("Position:", PositionLabel.Text));
+                    body.Append(CreateInfoParagraph("Years:", YearsLabel.Text));
+                    body.Append(CreateInfoParagraph("Description:", DescriptionLabel.Text));
+
+                    // Education Section
+                    body.Append(CreateSectionHeader("Education"));
+                    body.Append(CreateInfoParagraph("Degree:", DegreeLabel.Text));
+                    body.Append(CreateInfoParagraph("Years:", DegreeYearsLabel.Text));
+
+                    // Save the document
+                    mainPart.Document.Append(body);
+                    mainPart.Document.Save();
+                }
+
+                MessageBox.Show("DOCX generated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
 
         }
+
+
     }
 }
