@@ -1,21 +1,18 @@
 ﻿using CV_Generator.BLL.Services;
 using CV_Generator.DAL.Entities;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
 using System.IO;
 using System.Reflection;
-using System.Reflection.Metadata;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace CV_Generater
 {
@@ -501,7 +498,7 @@ namespace CV_Generater
 
             if (!string.IsNullOrEmpty(entry))
             {
-              
+
                 // Tạo một StackPanel để chứa TextBlock và nút xóa
                 StackPanel entryPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 5, 0, 5) };
 
@@ -845,12 +842,12 @@ namespace CV_Generater
                     newCV.Name = System.IO.Path.GetFileName(saveFileDialog.FileName);
                     newCV.CreateAt = DateTime.Now;
                     newCV.CreateBy = UserCreateCV.Id;
-                    _cvService.CreateCV(newCV); 
+                    _cvService.CreateCV(newCV);
                 }
             }
 
 
-            
+
 
 
 
@@ -914,7 +911,7 @@ namespace CV_Generater
 
             if (!string.IsNullOrEmpty(entry))
             {
-                
+
                 // Tạo một StackPanel để chứa TextBlock và nút xóa
                 StackPanel entryPanel = new StackPanel { Orientation = Orientation.Horizontal, Margin = new Thickness(0, 5, 0, 5) };
 
