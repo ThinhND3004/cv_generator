@@ -405,7 +405,7 @@
                 <!-- Sections -->
                 <StackPanel Margin="15,20,15,10" x:Name="BodyCVStackPanel">
 
-                            <!-- Objective Section -->
+                    <!-- Objective Section -->
                     <StackPanel Margin="0,10,0,10">
                         <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
                             <Grid.RowDefinitions>
@@ -413,15 +413,15 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
-                            
+
                             <TextBox Style="{DynamicResource TitleTextBox}" Text="OBJECTIVE"/>
-                            
+
                             <TextBox Grid.Row="1" x:Name="ObjectiveContentTextBlock" Text="Career goals: short-term, long-term." Margin="0,5,0,0"/>
 
-                            <!-- Add Section Button, initially hidden -->
-                            <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                            <!-- Add Section Button, initially hidden --><!--
+                            <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                         </Grid>
-                    
+
                     </StackPanel>
                     <!-- Education Section -->
                     <StackPanel Margin="0,10,0,10">
@@ -435,7 +435,7 @@
                                 <ColumnDefinition Width="1*"/>
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
-                        
+
 
                             <TextBox Grid.Row="0" Grid.ColumnSpan="2"  Style="{DynamicResource TitleTextBox}" Text="EDUCATION"/>
                             <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
@@ -460,8 +460,8 @@
                                     </Grid>
                                 </StackPanel>
                             </StackPanel>
-                            <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
-                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                            <!--<Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                         </Grid>
                     </StackPanel>
 
@@ -502,8 +502,8 @@
                                     </Grid>
                                 </StackPanel>
                             </StackPanel>
-                            <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
-                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                            <!--<Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                         </Grid>
                     </StackPanel>
 
@@ -544,8 +544,8 @@
                                     </Grid>
                                 </StackPanel>
                             </StackPanel>
-                            <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
-                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                            <!--<Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="SubInformationAddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                            <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                         </Grid>
                     </StackPanel>
 
@@ -572,8 +572,8 @@
 
                                     <TextBox Grid.Row="1" Text="Skill Name" Margin="0,5,0,0"/>
 
-                                    <!-- Add Section Button, initially hidden -->
-                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                    <!-- Add Section Button, initially hidden --><!--
+                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                                 </Grid>
 
                             </StackPanel>
@@ -592,11 +592,11 @@
 
                                     <TextBox Grid.Row="1" Text="Reference information including name, title and contact information" Margin="0,5,0,0"/>
 
-                                    <!-- Add Section Button, initially hidden -->
-                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                     <!--Add Section Button, initially hidden 
+                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                                 </Grid>
                             </StackPanel>
-                            
+
                             <!--Additional information-->
                             <StackPanel Margin="0,10,0,10">
                                 <Grid MouseEnter="Section_MouseEnter" MouseLeave="Section_MouseLeave" >
@@ -611,8 +611,8 @@
 
                                     <TextBox Grid.Row="1" Text="Fill in a additional information" Margin="0,5,0,0"/>
 
-                                    <!-- Add Section Button, initially hidden -->
-                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                    <!-- Add Section Button, initially hidden --><!--
+                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddLeftSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                                 </Grid>
 
                             </StackPanel>
@@ -654,8 +654,8 @@
                                             </Grid>
                                         </StackPanel>
                                     </StackPanel>
-                                    <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="AddWithColumnRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
-                                    <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                    <!--<Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="AddWithColumnRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                                    <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                                 </Grid>
                             </StackPanel>
 
@@ -693,8 +693,8 @@
                                             </Grid>
                                         </StackPanel>
                                     </StackPanel>
-                                    <Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="AddWithColumnRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
-                                    <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                    <!--<Button Grid.Row="2" Grid.Column="0"  x:Uid="SubInformationAddSectionButton" Content="+ Add SubSection" Click="AddWithColumnRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}"/>
+                                    <Button Grid.Row="2" Grid.Column="1" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                                 </Grid>
                             </StackPanel>
 
@@ -712,8 +712,8 @@
 
                                     <TextBox Grid.Row="1" Text="Interest Name" Margin="0,5,0,0"/>
 
-                                    <!-- Add Section Button, initially hidden -->
-                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />
+                                    <!-- Add Section Button, initially hidden --><!--
+                                    <Button Grid.Row="2" x:Uid="AddSectionButton" Content="+ Add Section" Click="AddRightSectionButton_Click" Style="{DynamicResource AddSectionButtonStyle}" />-->
                                 </Grid>
 
                             </StackPanel>
