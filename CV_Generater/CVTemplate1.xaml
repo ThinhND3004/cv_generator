@@ -207,7 +207,6 @@
 
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="0 50 10 0">
                     <Button x:Name="GeneratePDFButton" Content="Generate to PDF" Width="120" Margin="0 0 10 0" Click="GeneratePDFButton_Click" />
-                    <Button x:Name="GenerateButton" Content="Generate to PDF" Width="120" Margin="0 0 10 0" Click="GenerateButton_Click" />
                     <Button x:Name="GenerateDOCButton" Content="Generate to Docs" Width="120"/>
                 </StackPanel>
             </StackPanel>

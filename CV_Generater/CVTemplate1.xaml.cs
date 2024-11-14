@@ -786,82 +786,8 @@ namespace CV_Generater
 
 
 
+       
 
-
-
-        public void GeneratePdfFromWpfContent(UIElement content, string filePath)
-        {
-            try
-            {
-                // Create a RenderTargetBitmap to render the UI content into an image
-                RenderTargetBitmap rtb = new RenderTargetBitmap(
-                    (int)content.RenderSize.Width,
-                    (int)content.RenderSize.Height,
-                    96, 96, // DPI
-                    PixelFormats.Pbgra32);
-
-                // Render the UI element content into the bitmap
-                content.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-                content.Arrange(new Rect(content.DesiredSize));
-                rtb.Render(content);
-
-                // Create a Pdf document
-                PdfDocument pdfDoc = new PdfDocument();
-                PdfPage page = pdfDoc.AddPage();
-                XGraphics gfx = XGraphics.FromPdfPage(page);
-
-                // Convert the RenderTargetBitmap to a byte array (PNG format)
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    // Save the RenderTargetBitmap to a PNG in memory
-                    PngBitmapEncoder encoder = new PngBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(rtb));
-                    encoder.Save(ms);
-
-                    // Ensure the MemoryStream is at the beginning before reading it
-                    ms.Seek(0, SeekOrigin.Begin);
-
-                    // Create a Func<Stream> to return the MemoryStream
-                    Func<Stream> streamFunc = () => ms;
-
-                    // Create an XImage from the stream using the Func
-                    XImage xImage = XImage.FromStream(streamFunc);
-
-                    // Draw the image onto the PDF
-                    gfx.DrawImage(xImage, 0, 0, page.Width, page.Height);
-                }
-
-                // Save the PDF to the specified file path
-                pdfDoc.Save(filePath);
-                Console.WriteLine("PDF generated successfully!");
-            }
-            catch (Exception ex)
-            {
-                // Handle any errors
-                Console.WriteLine("Error generating PDF: " + ex.Message);
-            }
-        }
-
-        private void GenerateButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                // Ensure the method is being called
-                Console.WriteLine("GenerateButton_Click triggered");
-
-                // Assuming your content is inside a Grid named "MainGrid"
-                GeneratePdfFromWpfContent(MainGrid, "output.pdf");
-            }
-            catch (Exception ex)
-            {
-                // Handle errors during the button click
-                Console.WriteLine("Error during button click: " + ex.Message);
-            }
-        }
-
-
-
-        
 
 
         //private void AddNewLine(StackPanel targetStackPanel, Button clickedButton)
