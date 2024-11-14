@@ -13,29 +13,24 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Path = System.IO.Path;
 
 namespace CV_Generater
 {
     public partial class CVTemplate1 : Window
     {
         public Account UserCreateCV { get; set; }
-        private CurViService _cvService = new();
-        private TextBox inputTextBox;
-        private Button confirmButton;
-        private Button cancelButton;
-        private bool isBold;
-        private List<FormattedEntry> entries = new List<FormattedEntry>();
-        public class FormattedEntry
-        {
-            public string Text { get; set; }
-            public XFont Font { get; set; }
-            public XBrush Brush { get; set; }
-        }
+        private readonly CurViService _cvService = new();
+        private const double A4_WIDTH_MM = 210;
+        private const double A4_HEIGHT_MM = 297;
+        private const double MM_TO_POINT = 2.83465;
+
         public CVTemplate1()
         {
             InitializeComponent();
         }
 
+        // Xử lý sự kiện click để upload ảnh
         private void UploadPhoto_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -54,6 +49,7 @@ namespace CV_Generater
             }
         }
 
+        // Xử lý sự kiện click để chỉnh sửa text
         private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && sender is TextBlock textBlock)
@@ -73,11 +69,197 @@ namespace CV_Generater
         {
             if (sender is TextBox textBox && textBox.Tag is TextBlock textBlock)
             {
-                textBlock.Text = textBox.Text;
-                textBox.Visibility = Visibility.Collapsed;
-                textBlock.Visibility = Visibility.Visible;
+                if (string.IsNullOrEmpty(textBox.Text))
+                {
+                    textBlock.Text = string.Empty;
+                    textBox.Visibility = Visibility.Collapsed;
+                    textBlock.Visibility = Visibility.Collapsed;
+                    textBlock.Tag = null;
+                }
+                else
+                {
+                    textBlock.Text = textBox.Text;
+                    textBox.Visibility = Visibility.Collapsed;
+                    textBlock.Visibility = Visibility.Visible;
+                }
             }
         }
+
+
+        private TextBlock CreateTextBlock(string name, string text, double fontSize, FontWeight fontWeight, Brush foreground, Thickness margin, MouseButtonEventHandler mouseDownEvent, out TextBox associatedTextBox)
+        {
+            TextBlock textBlock = new TextBlock
+            {
+                Name = name,
+                Text = text,
+                FontSize = fontSize,
+                FontWeight = fontWeight,
+                Margin = margin,
+                Foreground = foreground
+            };
+            textBlock.MouseDown += mouseDownEvent;
+
+            associatedTextBox = new TextBox
+            {
+                Name = name.Replace("TextBlock", "TextBox"),
+                Visibility = Visibility.Collapsed,
+                FontSize = fontSize,
+                Margin = new Thickness(0, 5, 0, 5),
+                AcceptsReturn = true
+            };
+            associatedTextBox.LostFocus += TextBox_LostFocus;
+
+            textBlock.Tag = associatedTextBox;
+            associatedTextBox.Tag = textBlock;
+
+            return textBlock;
+        }
+
+        private void AddNewRow(object sender, RoutedEventArgs e)
+        {
+            RowDefinition newRow = new RowDefinition();
+            newRow.Height = GridLength.Auto;
+            WorkExperienceGrid.RowDefinitions.Add(newRow);
+
+            int currentIndex = WorkExperienceGrid.RowDefinitions.Count - 1;
+
+
+            StackPanel newStackPanel1 = new StackPanel();
+            newStackPanel1.VerticalAlignment = VerticalAlignment.Top;
+            newStackPanel1.SetValue(Grid.RowProperty, currentIndex);
+            newStackPanel1.SetValue(Grid.ColumnProperty, 0);
+
+            TextBox workExpDateTextBox;
+            TextBlock workExpDateTextBlock = CreateTextBlock(
+                $"WorkExpDateTextBlock{currentIndex}",
+                "Jan 2020 - Present",
+                10,
+                FontWeights.Bold,
+                Foreground = new SolidColorBrush(Colors.Green),
+                new Thickness(0, 8, 5, 5),
+                TextBlock_MouseDown,
+                out workExpDateTextBox
+            );
+
+            newStackPanel1.Children.Add(workExpDateTextBlock);
+            newStackPanel1.Children.Add(workExpDateTextBox);
+            WorkExperienceGrid.Children.Add(newStackPanel1);
+
+
+            StackPanel newStackPanel2 = new StackPanel();
+            newStackPanel2.SetValue(Grid.RowProperty, currentIndex);
+            newStackPanel2.SetValue(Grid.ColumnProperty, 1);
+
+            TextBox companyNameTextBox;
+            TextBlock companyNameTextBlock = CreateTextBlock(
+                $"CompanyNameTextBlock{currentIndex}",
+                "Full Group Inc.",
+                14,
+                FontWeights.Bold,
+                Foreground = new SolidColorBrush(Colors.Black),
+                new Thickness(0, 5, 0, 5),
+                TextBlock_MouseDown,
+                out companyNameTextBox
+            );
+
+            TextBox jobDescriptionTextBox;
+            TextBlock jobDescriptionTextBlock = CreateTextBlock(
+                $"JobDescriptionTextBlock{currentIndex}",
+                "Responsibilities: Worked on backend development using PHP, MySQL, and Node.js.\nAchievements: Improved system performance by 20%.",
+                12,
+                FontWeights.Normal,
+                Foreground = new SolidColorBrush(Colors.Black),
+                new Thickness(0, 5, 0, 5),
+                TextBlock_MouseDown,
+                out jobDescriptionTextBox
+            );
+
+            newStackPanel2.Children.Add(companyNameTextBlock);
+            newStackPanel2.Children.Add(companyNameTextBox);
+            newStackPanel2.Children.Add(jobDescriptionTextBlock);
+            newStackPanel2.Children.Add(jobDescriptionTextBox);
+
+            WorkExperienceGrid.Children.Add(newStackPanel2);
+        }
+
+
+
+
+        private void AddNewEduRow(object sender, RoutedEventArgs e)
+        {
+            int currentIndex = EducationGrid.RowDefinitions.Count;
+
+
+            TextBox educationExpDateTextBox;
+            TextBlock educationExpDateTextBlock = CreateTextBlock(
+                $"EducationExpDateTextBlock{currentIndex}",
+                "Jan 2020 - Present",
+                10,
+                FontWeights.Bold,
+                new SolidColorBrush(Colors.Green),
+                new Thickness(0, 8, 5, 5),
+                TextBlock_MouseDown,
+                out educationExpDateTextBox
+            );
+
+
+            TextBox schoolNameTextBox;
+            TextBlock schoolNameTextBlock = CreateTextBlock(
+                $"SchoolNameTextBlock{currentIndex}",
+                "FPT University",
+                14,
+                FontWeights.Bold,
+                new SolidColorBrush(Colors.Black),
+                new Thickness(0, 5, 0, 0),
+                TextBlock_MouseDown,
+                out schoolNameTextBox
+            );
+
+
+            TextBox eduDescriptionTextBox;
+            TextBlock eduDescriptionTextBlock = CreateTextBlock(
+                $"EduDescriptionTextBlock{currentIndex}",
+                "Degree: Bachelor\nMajor: Website, Mobile Programming",
+                12,
+                FontWeights.Normal,
+                new SolidColorBrush(Colors.Black),
+                new Thickness(0, 5, 0, 0),
+                TextBlock_MouseDown,
+                out eduDescriptionTextBox
+            );
+
+            StackPanel dateStackPanel = new StackPanel
+            {
+                VerticalAlignment = VerticalAlignment.Top
+            };
+            dateStackPanel.Children.Add(educationExpDateTextBlock);
+            dateStackPanel.Children.Add(educationExpDateTextBox);
+
+            StackPanel detailsStackPanel = new StackPanel();
+            detailsStackPanel.Children.Add(schoolNameTextBlock);
+            detailsStackPanel.Children.Add(schoolNameTextBox);
+            detailsStackPanel.Children.Add(eduDescriptionTextBlock);
+            detailsStackPanel.Children.Add(eduDescriptionTextBox);
+
+            EducationGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+
+            Grid.SetRow(dateStackPanel, currentIndex);
+            Grid.SetColumn(dateStackPanel, 0);
+
+            Grid.SetRow(detailsStackPanel, currentIndex);
+            Grid.SetColumn(detailsStackPanel, 1);
+
+
+            EducationGrid.Children.Add(dateStackPanel);
+            EducationGrid.Children.Add(detailsStackPanel);
+        }
+
+
+
+
+
+
 
 
         //private void AddNewLine(StackPanel targetStackPanel, Button clickedButton)
@@ -895,7 +1077,6 @@ namespace CV_Generater
         //    paragraph.Append(infoRun);
         //    return paragraph;
         //}
-
 
     }
 }
