@@ -5,6 +5,8 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.Win32;
 using PdfSharpCore.Drawing;
 using PdfSharpCore.Pdf;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
 using System.IO;
 using System.Reflection;
 using System.Windows;
@@ -584,7 +586,7 @@ namespace CV_Generater
             newRow.Height = GridLength.Auto;
             WorkExperienceGrid.RowDefinitions.Add(newRow);
 
-            int currentIndex = WorkExperienceGrid.RowDefinitions.Count - 1;
+            int currentIndex = WorkExperienceGrid.RowDefinitions.Count;
 
 
             StackPanel newStackPanel1 = new StackPanel();
@@ -720,9 +722,146 @@ namespace CV_Generater
 
 
 
+        private void AddNewProject(object sender, RoutedEventArgs e)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                RowDefinition newRow = new RowDefinition();
+                newRow.Height = GridLength.Auto;
+                ProjectsGrid.RowDefinitions.Add(newRow);
+            }
+
+            int currentIndex = ProjectsGrid.RowDefinitions.Count - 4;
+
+            AddTextBlockAndTextBox("ProjectName", "Project Name\n(2017 - Present)", currentIndex, fontSize: 14, fontWeight: FontWeights.Bold);
+            AddTextBlockAndTextBox("Descriptions", "Descriptions:", currentIndex + 1);
+            AddTextBlockAndTextBox("DescriptionsDetail", "Detailed description of the project...", currentIndex + 1, 1);
+            AddTextBlockAndTextBox("PositionInProject", "Position:", currentIndex + 2);
+            AddTextBlockAndTextBox("PositionInProjectDetail", "Backend Developer", currentIndex + 2, 1);
+            AddTextBlockAndTextBox("TechnologyInUse", "Technology in Use:", currentIndex + 3);
+            AddTextBlockAndTextBox("TechnologyInUseDetail", "C#, .NET, SQL Server, Azure", currentIndex + 3, 1);
+        }
+
+        private void AddTextBlockAndTextBox(string name, string text, int row, int column = 0, double fontSize = 12, FontWeight fontWeight = default)
+        {
+            StackPanel stackPanel = new StackPanel();
+            stackPanel.SetValue(Grid.RowProperty, row);
+            stackPanel.SetValue(Grid.ColumnProperty, column);
+
+
+            fontWeight = fontWeight == default ? FontWeights.Normal : fontWeight;
+
+            TextBlock textBlock = new TextBlock
+            {
+                Name = $"{name}TextBlock",
+                Text = text,
+                FontSize = fontSize,
+                FontWeight = fontWeight,
+                Margin = new Thickness(0, 5, 0, 5),
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            TextBox textBox = new TextBox
+            {
+                Name = $"{name}TextBox",
+                FontSize = fontSize,
+                Text = text,
+                Margin = new Thickness(0, 5, 0, 5),
+                Visibility = Visibility.Collapsed,
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            textBlock.Tag = textBox;
+            textBox.Tag = textBlock;
+
+            stackPanel.Children.Add(textBlock);
+            stackPanel.Children.Add(textBox);
+
+            ProjectsGrid.Children.Add(stackPanel);
+
+            textBlock.MouseDown += TextBlock_MouseDown;
+            textBox.LostFocus += TextBox_LostFocus;
+        }
 
 
 
+
+
+
+        public void GeneratePdfFromWpfContent(UIElement content, string filePath)
+        {
+            try
+            {
+                // Create a RenderTargetBitmap to render the UI content into an image
+                RenderTargetBitmap rtb = new RenderTargetBitmap(
+                    (int)content.RenderSize.Width,
+                    (int)content.RenderSize.Height,
+                    96, 96, // DPI
+                    PixelFormats.Pbgra32);
+
+                // Render the UI element content into the bitmap
+                content.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+                content.Arrange(new Rect(content.DesiredSize));
+                rtb.Render(content);
+
+                // Create a Pdf document
+                PdfDocument pdfDoc = new PdfDocument();
+                PdfPage page = pdfDoc.AddPage();
+                XGraphics gfx = XGraphics.FromPdfPage(page);
+
+                // Convert the RenderTargetBitmap to a byte array (PNG format)
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    // Save the RenderTargetBitmap to a PNG in memory
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(rtb));
+                    encoder.Save(ms);
+
+                    // Ensure the MemoryStream is at the beginning before reading it
+                    ms.Seek(0, SeekOrigin.Begin);
+
+                    // Create a Func<Stream> to return the MemoryStream
+                    Func<Stream> streamFunc = () => ms;
+
+                    // Create an XImage from the stream using the Func
+                    XImage xImage = XImage.FromStream(streamFunc);
+
+                    // Draw the image onto the PDF
+                    gfx.DrawImage(xImage, 0, 0, page.Width, page.Height);
+                }
+
+                // Save the PDF to the specified file path
+                pdfDoc.Save(filePath);
+                Console.WriteLine("PDF generated successfully!");
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors
+                Console.WriteLine("Error generating PDF: " + ex.Message);
+            }
+        }
+
+        private void GenerateButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Ensure the method is being called
+                Console.WriteLine("GenerateButton_Click triggered");
+
+                // Assuming your content is inside a Grid named "MainGrid"
+                GeneratePdfFromWpfContent(MainGrid, "output.pdf");
+            }
+            catch (Exception ex)
+            {
+                // Handle errors during the button click
+                Console.WriteLine("Error during button click: " + ex.Message);
+            }
+        }
+
+
+
+        
 
 
         //private void AddNewLine(StackPanel targetStackPanel, Button clickedButton)
