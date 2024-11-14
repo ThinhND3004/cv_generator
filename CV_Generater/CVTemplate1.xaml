@@ -1,11 +1,11 @@
 ﻿<Window x:Class="CV_Generater.CVTemplate1"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="CV Generator" Height="600" Width="600">
+        Title="CV Generator" Height="600" Width="800" >
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Border Padding="20" Grid.Column="0" Background="#2D3E50">
@@ -17,59 +17,140 @@
                     <Button Content="Upload Photo" Width="100" Margin="0,10,0,0" Click="UploadPhoto_Click"/>
                 </StackPanel>
 
-                <TextBlock x:Name="PersonalInfoLabel" Text="Nguyen Van A" FontWeight="Bold" FontSize="16" Foreground="White"
-               MouseDown="PersonalInfoLabel_MouseDown" Margin="0,5"/>
-                <TextBox x:Name="PersonalInfoTextBox" Visibility="Collapsed" LostFocus="PersonalInfoTextBox_LostFocus"/>
+                <TextBlock Name="FullNameTextBlock" Text="Nguyen Van A" FontWeight="Bold" FontSize="16" Foreground="White"
+                   Tag="{Binding ElementName=FullNameTextBox}"
+                   MouseDown="TextBlock_MouseDown" Margin="0,5"/>
+                <TextBox Name="FullNameTextBox" Visibility="Collapsed"
+                 Tag="{Binding ElementName=FullNameTextBlock}" LostFocus="TextBox_LostFocus" Margin="0,5"/>
 
-                <TextBlock x:Name="PositionLabel" Text="Back-end Developer" FontWeight="Bold" FontSize="10" Foreground="White"
-               MouseDown="PositionLabel_MouseDown" Margin="0,5,0,30"/>
-                <TextBox x:Name="PositionTextBox" Visibility="Collapsed" LostFocus="PositionTextBox_LostFocus"/>
+                <TextBlock Name="PositionTextBlock" Text="Back-end Developer" FontWeight="Bold" FontSize="10" Foreground="White"
+                   Tag="{Binding ElementName=PositionTextBox}"
+                   MouseDown="TextBlock_MouseDown" Margin="0,5,0,30"/>
+                <TextBox Name="PositionTextBox" Visibility="Collapsed"
+                 Tag="{Binding ElementName=PositionTextBlock}" LostFocus="TextBox_LostFocus" Margin="0,5,0,30"/>
 
-                <TextBlock x:Name="EmailLabel" Text="email@example.com" Foreground="White"
-               MouseDown="EmailLabel_MouseDown" Margin="0,5"/>
-                <TextBox x:Name="EmailTextBox" Visibility="Collapsed" LostFocus="EmailTextBox_LostFocus"/>
+                <TextBlock Name="EmailTextBlock" Text="email@example.com" Foreground="White"
+                   Tag="{Binding ElementName=EmailTextBox}"
+                   MouseDown="TextBlock_MouseDown" Margin="0,5"/>
+                <TextBox Name="EmailTextBox" Visibility="Collapsed"
+                 Tag="{Binding ElementName=EmailTextBlock}" LostFocus="TextBox_LostFocus" Margin="0,5"/>
 
-                <TextBlock x:Name="PhoneLabel" Text="123-456-7890" Foreground="White"
-               MouseDown="PhoneLabel_MouseDown" Margin="0,5"/>
-                <TextBox x:Name="PhoneTextBox" Visibility="Collapsed" LostFocus="PhoneTextBox_LostFocus"/>
+                <TextBlock Name="PhoneTextBlock" Text="123-456-7890" Foreground="White"
+                   Tag="{Binding ElementName=PhoneTextBox}"
+                   MouseDown="TextBlock_MouseDown" Margin="0,5"/>
+                <TextBox Name="PhoneTextBox" Visibility="Collapsed"
+                 Tag="{Binding ElementName=PhoneTextBlock}" LostFocus="TextBox_LostFocus" Margin="0,5"/>
 
-                <TextBlock x:Name="AddressLabel" Text="123 Street, City, Country" Foreground="White"
-               MouseDown="AddressLabel_MouseDown" Margin="0,5"/>
-                <TextBox x:Name="AddressTextBox" Visibility="Collapsed" LostFocus="AddressTextBox_LostFocus"/>
+                <TextBlock Name="AddressTextBlock" Text="123 Street, City, Country" Foreground="White"
+                   Tag="{Binding ElementName=AddressTextBox}"
+                   MouseDown="TextBlock_MouseDown" Margin="0,5"/>
+                <TextBox Name="AddressTextBox" Visibility="Collapsed"
+                 Tag="{Binding ElementName=AddressTextBlock}" LostFocus="TextBox_LostFocus" Margin="0,5"/>
             </StackPanel>
         </Border>
 
-        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="10">
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" Margin="20,10,0,10">
             <StackPanel>
-
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
-                    <StackPanel x:Name="SubStackPanel" >
-                        <TextBlock Text="Professional Experience" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
-                        <TextBlock x:Name="CompanyNameLabel" Text="Full Group Inc." FontWeight="Bold" FontSize="16" Margin="0,5"
-                           MouseDown="CompanyNameLabel_MouseDown"/>
-                        <TextBox x:Name="CompanyNameTextBox" Visibility="Collapsed" LostFocus="CompanyNameTextBox_LostFocus"/>
-
-                        <TextBlock x:Name="YearsLabel" Text="2022-2024" FontSize="12" Margin="0,0,0,5"
-                           MouseDown="YearsLabel_MouseDown"/>
-                        <TextBox x:Name="YearsTextBox" Visibility="Collapsed" LostFocus="YearsTextBox_LostFocus"/>
-
-                        <TextBlock x:Name="DescriptionLabel" Text="Designed unit test case." FontSize="12" Margin="0,0,0,5"                           MouseDown="DescriptionLabel_MouseDown" />
-                        <TextBox x:Name="DescriptionTextBox" Visibility="Collapsed" LostFocus="DescriptionTextBox_LostFocus"/>
-                        <StackPanel x:Name="ExperienceList" Margin="0,10,0,0"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                            <Button Content="Add Title" Click="AddTitleButton_Click" Height="20"/>
-                            <Button Content="Add New Line" Click="AddNewLineButton_Click" Margin="5"/>
-                            <Button Content="Add New Bold Line" Click="AddNewBoldLineButton_Click" Margin="5"/>
-                        </StackPanel>
-                    </StackPanel>
+                <StackPanel Name="OverViewStackPanel">
+                    <TextBlock Text="Overview" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
+                    <TextBlock Name="OverViewTextBlock" FontSize="12" Margin="0,0,0,5" TextWrapping="Wrap" Tag="{Binding ElementName=OverViewTextBox}" MouseDown="TextBlock_MouseDown" Text="- Over 2 years of experience in programming with good communication and quick learning skills&#10;- Strengths: Front-end technology and Back-end web application development&#10;- Proficiency in HTML, CSS, JavaScript&#10;- Strong proficiency in JavaScript, including DOM manipulation and the JavaScript object model&#10;- Thorough understanding of React.js and its core principles&#10;- Experience with popular React.js workflows (such as Flux or Redux)&#10;- Familiarity with newer specifications of EcmaScript&#10;- Experience with data structure libraries&#10;- Familiarity with RESTful APIs&#10;- Strong Experience in: PHP, JavaScript (ReactJS, React-native), MySQL, NoSQL, GraphQL, Redis, JSON, API, Docker, Kubernetes, Rancher, AWS services&#10;- Proficient use of source code management tools: SVN, GIT&#10;- Proficiency in operating systems: Linux (Ubuntu, OSX), Windows&#10;- Ability to learn and apply new technology quickly&#10;- Current working location: Ha Noi, Viet Nam"/>
+                    <TextBox Name="OverViewTextBox" Visibility="Collapsed" FontSize="12" Margin="0,0,0,5" TextWrapping="Wrap" Tag="{Binding ElementName=OverViewTextBlock}" LostFocus="TextBox_LostFocus" AcceptsReturn="True"/>
                 </StackPanel>
 
+                <StackPanel Name="WorkExperienceStackPanel">
+                    <TextBlock Text="Work experience" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
+                    <Grid Margin="0,10,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
+                        <StackPanel Grid.Column="0" VerticalAlignment="Top">
+                            <TextBlock Name="WorkExpDateTextBlock" Text="Jan 2020 - Present" FontSize="10" FontWeight="Bold" Margin="0,8, 5, 5" Foreground="#006400" MouseDown="TextBlock_MouseDown" Tag="{Binding ElementName=WorkExpDateTextBox}" TextWrapping="Wrap"/>
+                            <TextBox Name="WorkExpDateTextBox" Visibility="Collapsed" FontSize="12" Margin="0,5" LostFocus="TextBox_LostFocus" TextWrapping="Wrap" AcceptsReturn="True" Tag="{Binding ElementName=WorkExpDateTextBlock}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1">
+                            <TextBlock Name="CompanyNameTextBlock" Text="Full Group Inc." FontSize="14" FontWeight="Bold" Margin="0,5" MouseDown="TextBlock_MouseDown" Tag="{Binding ElementName=CompanyNameTextBox}"/>
+                            <TextBox Name="CompanyNameTextBox" Visibility="Collapsed" FontSize="14" Margin="0,5" LostFocus="TextBox_LostFocus" Tag="{Binding ElementName=CompanyNameTextBlock}"/>
+
+                            <TextBlock Name="JobDescriptionTextBlock" FontSize="12" Margin="0,5" MouseDown="TextBlock_MouseDown" Tag="{Binding ElementName=JobDescriptionTextBox}" TextWrapping="Wrap"  
+                                       Text="Responsibilities: Worked on backend development using PHP, MySQL, and Node.js.&#10;Achievements: Improved system performance by 20%."/>
+                            <TextBox Name="JobDescriptionTextBox" Visibility="Collapsed" FontSize="12" Margin="0,5" LostFocus="TextBox_LostFocus" TextWrapping="Wrap" AcceptsReturn="True" Tag="{Binding ElementName=JobDescriptionTextBlock}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Name="EducationStackPanel">
+                    <TextBlock Text="Education" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
+                    <Grid Margin="0,10,0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top">
+                            <TextBlock Name="EducationExpDateTextBlock" Text="Jan 2020 - Present" FontSize="10" FontWeight="Bold" Margin="0,8, 5, 5" Foreground="#006400" MouseDown="TextBlock_MouseDown" Tag="{Binding ElementName=EducationExpDateTextBox}" TextWrapping="Wrap"/>
+                            <TextBox Name="EducationExpDateTextBox" Visibility="Collapsed" FontSize="12" Margin="0,5" LostFocus="TextBox_LostFocus" TextWrapping="Wrap" AcceptsReturn="True" Tag="{Binding ElementName=EducationExpDateTextBlock}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="0">
+                            <TextBlock Name="SchoolNameTextBlock" Text="FPT Univiersity" FontSize="14" FontWeight="Bold" Margin="0,5" MouseDown="TextBlock_MouseDown" Tag="{Binding ElementName=SchoolNameTextBox}"/>
+                            <TextBox Name="SchoolNameTextBox" Visibility="Collapsed" FontSize="14" Margin="0,5" LostFocus="TextBox_LostFocus" Tag="{Binding ElementName=SchoolNameTextBlock}"/>
+
+                            <TextBlock Name="EduDescriptionTextBlock" FontSize="12" Margin="0,5" MouseDown="TextBlock_MouseDown" Tag="{Binding ElementName=EduDescriptionTextBox}" TextWrapping="Wrap" 
+                                       Text="Degree: bachelor&#10;Maojor: Website, Mobile Programming"/>
+
+                            <TextBox Name="EduDescriptionTextBox" Visibility="Collapsed" FontSize="12" Margin="0,5" LostFocus="TextBox_LostFocus" TextWrapping="Wrap" AcceptsReturn="True" Tag="{Binding ElementName=EduDescriptionTextBlock}"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <StackPanel Name="Skills">
+                    <TextBlock Text="Skills" FontWeight="Bold" FontSize="20" Margin="0,20,0,5"/>
+                    <Grid Margin="0,10,0,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Grid.Row="0" VerticalAlignment="Top">
+                            <TextBlock Name="TechnicalSkillsTextBlock" Text="Technical skils" FontSize="15" FontWeight="Bold" Margin="0,8, 5, 5" MouseDown="TextBlock_MouseDown" Tag="{Binding ElementName=TechnicalSkillsTextBox}" TextWrapping="Wrap" />
+                            <TextBox Name="TechnicalSkillsTextBox" FontSize="15" Margin="0,8, 5, 5" LostFocus="TextBox_LostFocus" TextWrapping="Wrap" Visibility="Collapsed" AcceptsReturn="True" Tag="{Binding ElementName=TechnicalSkillsTextBlock}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="0">
+                            <TextBlock Name="TechnicalSkillsDetailTextBlock" FontSize="12" Margin="0,0,0,5" TextWrapping="Wrap" Tag="{Binding ElementName=TechnicalSkillsDetailTextBox}" MouseDown="TextBlock_MouseDown" Text="HTML, CSS, JavaScript (ReactJS, React-Native, Lit)&#10;PHP (Laravel, Symfony, Codeigniter, Yii)&#10;Node (ExpressJS)&#10;RESTful API, GraphQL&#10;MySQL, PostgreSQL, NoSQL (MongoDB)&#10;Server (Apache, Nginx, Redis, Memcached, Queue, Log, Crontjob...), Rancher, K8S, Docker&#10;AWS (Load balancing, EC2, ECS, Router 53, RDS, S3)"/>
+                            <TextBox Name="TechnicalSkillsDetailTextBox" Visibility="Collapsed" FontSize="12" Margin="0,0,0,5" TextWrapping="Wrap" Tag="{Binding ElementName=TechnicalSkillsDetailTextBlock}" LostFocus="TextBox_LostFocus" AcceptsReturn="True"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="0" Grid.Row="1" VerticalAlignment="Top">
+                            <TextBlock Name="SoftSkillsTextBlock" Text="Soft skils" FontSize="15" FontWeight="Bold" Margin="0,8, 5, 5" MouseDown="TextBlock_MouseDown" Tag="{Binding ElementName=SoftSkillsTextBox}" TextWrapping="Wrap" />
+                            <TextBox Name="SoftSkillsTextBox" FontSize="15" Margin="0,8, 5, 5" LostFocus="TextBox_LostFocus" TextWrapping="Wrap" Visibility="Collapsed" AcceptsReturn="True" Tag="{Binding ElementName=SoftSkillsTextBlock}"/>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Grid.Row="1">
+                            <TextBlock Name="SoftSkillsDetailTextBlock" FontSize="12" Margin="0,0,0,5" TextWrapping="Wrap" Tag="{Binding ElementName=SoftSkillsDetailTextBox}" MouseDown="TextBlock_MouseDown" Text="Communication&#10;Problem-Solving&#10;Time Management&#10;Creativity&#10;"/>
+                            <TextBox Name="SoftSkillsDetailTextBox" Visibility="Collapsed" FontSize="12" Margin="0,0,0,5" TextWrapping="Wrap" Tag="{Binding ElementName=SoftSkillsDetailTextBlock}" LostFocus="TextBox_LostFocus" AcceptsReturn="True"/>
+                        </StackPanel>
+                    </Grid>
+
+
+
+                    
+
+                </StackPanel>
                 
-                   
+                
+
+
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="0 50 10 0">
-                    <Button Content="Generate to PDF" Width="120" Click="GenerateToPdf_Click" Margin="0 0 10 0"/>
-                    <Button Content="Generate to Docs" Width="120" Click="GenerateToDocx_Click"/>
+                    <Button Content="Generate to PDF" Width="120" Margin="0 0 10 0"/>
+                    <Button Content="Generate to Docs" Width="120"/>
                 </StackPanel>
             </StackPanel>
 
