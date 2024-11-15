@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Template;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace CV_Generator
 {
@@ -50,9 +52,26 @@ namespace CV_Generator
                 MessageBox.Show("Login before create CV!", "Create CV Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            CVTemplate1 cVTemplate1 = new CVTemplate1();
-            cVTemplate1.UserCreateCV = LoginAcc;
-            cVTemplate1.ShowDialog();
+
+            TemplateSelection templateSelect = new TemplateSelection();
+            bool? result = templateSelect.ShowDialog();
+            if (result == true)
+            {
+                if (templateSelect.SelectedTemplate == 1)
+                {
+                    CVTemplate1 cVTemplate1 = new CVTemplate1();
+                    cVTemplate1.UserCreateCV = LoginAcc;
+                    cVTemplate1.ShowDialog();
+                }
+                else if (templateSelect.SelectedTemplate == 2)
+                {
+                    Template1Window Template1Window = new Template1Window();
+                    Template1Window.ShowDialog();
+                }
+            }
+            //CVTemplate1 cVTemplate1 = new CVTemplate1();
+            //cVTemplate1.UserCreateCV = LoginAcc;
+            //cVTemplate1.ShowDialog();
 
         }
 
