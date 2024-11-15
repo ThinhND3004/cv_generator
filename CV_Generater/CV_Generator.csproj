@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CV_Generator.BLL\CV_Generator.BLL.csproj" />
-    <ProjectReference Include="..\Template\Template.csproj" />
   </ItemGroup>
 
   <ItemGroup>
