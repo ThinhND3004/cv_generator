@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:CV_Generater"
              StartupUri="CVTemplate1.xaml">
+
     <Application.Resources>
         
         
