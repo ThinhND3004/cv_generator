@@ -21,5 +21,20 @@ namespace CV_Generator.BLL.Services
         {
             return _repo.GetByUserId(id);
         }
+
+        public int GetAmountOfCreatedCv(int id)
+        {
+            List<CurriculumVitae> cvs = GetCVsByLoginUserId(id);
+            int count = 0;
+            foreach (var cv in cvs)
+            {
+                if (cv != null) // Kiểm tra nếu cần thiết
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
     }
 }

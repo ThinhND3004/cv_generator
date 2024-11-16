@@ -531,15 +531,11 @@ namespace CV_Generater
                 document.Save(filename);
 
                 // Lưu tên file CV vào database
-                CurriculumVitae newCV = new()
-                {
-                    Name = Path.GetFileName(filename)
-                };
-                _cvService.CreateCV(newCV);
+                SaveFileToDB(filename);
 
                 MessageBox.Show("PDF generated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-
+            HandleCloseWindow();
             document.Close();
         }
 
@@ -556,7 +552,7 @@ namespace CV_Generater
             if (saveFileDialog.ShowDialog() == true)
             {
                 //string templateFileName = "Template.docx"; // Tên file template
-                string templatePath = @"D:\GitHubSWP\cv_generator\Template.docx";
+                string templatePath = @"C:\Users\ACER\Desktop\prn_ass\cv_generator\Template.docx";
 
                 // Kiểm tra xem template có tồn tại không
                 if (!File.Exists(templatePath))
@@ -632,19 +628,48 @@ namespace CV_Generater
                             }
                         }
 
+
+                        SaveFileToDB(outputPath);
+
                         // Lưu tài liệu
                         document.SaveAs(outputPath);
                     }
 
-                    MessageBox.Show($"Tài liệu đã được tạo thành công tại {outputPath}!");
+
+
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Lỗi khi tạo DOC: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
+                HandleCloseWindow();
+
             }
         }
+
+        private void SaveFileToDB(string filename)
+        {
+            CurriculumVitae newCV = new()
+            {
+                Name = Path.GetFileName(filename),
+                CreateAt = DateTime.Now,
+                CreateBy = UserCreateCV.Id
+            };
+            _cvService.CreateCV(newCV);
+        }
+
+        private void HandleCloseWindow()
+        {
+            MessageBoxResult ans = MessageBox.Show("Generated successfully!! Close window?", "Close window", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (ans == MessageBoxResult.Yes)
+            {
+                this.Close();
+            }
+            return;
+        }
+
 
         }
 

@@ -54,6 +54,8 @@ namespace CV_Generator
             cVTemplate1.UserCreateCV = LoginAcc;
             cVTemplate1.ShowDialog();
 
+
+            FillDataGrid();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -67,15 +69,23 @@ namespace CV_Generator
             HelloAccountLabel.Content = $"Hello, {LoginAcc.FullName}";
             CVDataGrid.ItemsSource = _cvService.GetCVsByLoginUserId(LoginAcc.Id);
 
-            int numberOfCreateCv = _cvService.GetCVsByLoginUserId(LoginAcc.Id).Count;
+            int numberOfCreateCv = _cvService.GetAmountOfCreatedCv(LoginAcc.Id);
 
-            if (numberOfCreateCv > 0)
-            {
-                string cvText = numberOfCreateCv > 1 ? "CVs" : "CV";
-                CountCreatedCVLabel.Content = $"You have created {numberOfCreateCv} {cvText}!!";
-            }
+            string cvText = numberOfCreateCv > 1 ? "CVs" : "CV";
+            CountCreatedCVLabel.Content = $"You have created {numberOfCreateCv} {cvText}!!";
+            
 
 
+        }
+
+        private void FillDataGrid()
+        {
+            int numberOfCreateCv = _cvService.GetAmountOfCreatedCv(LoginAcc.Id);
+
+            string cvText = numberOfCreateCv > 1 ? "CVs" : "CV";
+            CountCreatedCVLabel.Content = $"You have created {numberOfCreateCv} {cvText}!!";
+            CVDataGrid.ItemsSource = null;
+            CVDataGrid.ItemsSource = _cvService.GetCVsByLoginUserId(LoginAcc.Id);
         }
     }
 }

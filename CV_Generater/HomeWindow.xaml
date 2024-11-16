@@ -32,7 +32,7 @@
 
                 <!-- StackPanel for Buttons on the Right -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Column="1">
-                    <Button Content="Settings" Width="150" Height="50" FontSize="25" FontWeight="SemiBold" Background="#b38b60" Margin="0,0,10,0" Foreground="White"/>
+                    
                     <Button Content="Log Out" Width="150" Height="50" FontSize="25" FontWeight="SemiBold" Background="#b38b60" Foreground="White" Click="Button_Click"/>
                 </StackPanel>
             </Grid>
