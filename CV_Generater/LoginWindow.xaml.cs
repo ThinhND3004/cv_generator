@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Template;
@@ -40,7 +41,7 @@ namespace CV_Generater
         }
 
 
-        private void LoginButton_Click(object sender, RoutedEventArgs e)
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             string email = EmailTextBox.Text.Trim();
             string password = PasswordTextBox.Text;
@@ -68,6 +69,33 @@ namespace CV_Generater
                 }   
             }
 
+
+            // Hiển thị vòng xoay
+            Spinner.Visibility = Visibility.Visible;
+
+            // Tạo hoạt ảnh xoay
+            var rotationAnimation = new DoubleAnimation(0, 360, new Duration(TimeSpan.FromSeconds(1)))
+            {
+                RepeatBehavior = RepeatBehavior.Forever // Lặp vô hạn
+            };
+
+            // Gắn hoạt ảnh với SpinnerTransform
+            SpinnerTransform.BeginAnimation(RotateTransform.AngleProperty, rotationAnimation);
+
+            // Giả lập xử lý đăng nhập
+            await Task.Delay(3000); // Thay bằng logic xử lý thực tế.
+
+            // Dừng hoạt ảnh và ẩn vòng xoay
+            SpinnerTransform.BeginAnimation(RotateTransform.AngleProperty, null);
+            Spinner.Visibility = Visibility.Collapsed;
+
+
+
+
+
+
+
+
             HomeWindow home = new();
             home.LoginAcc = loginAcc;
             this.Hide();
@@ -75,5 +103,7 @@ namespace CV_Generater
             this.Show();
             this.Activate();
         }
+
+        
     }
 }

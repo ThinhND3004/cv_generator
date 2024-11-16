@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d" 
         Height="650" 
@@ -55,7 +56,32 @@
                 </Grid>
 
 
-                <Button x:Name="LoginButton" Content="Go" Width="150" Height="50" FontSize="25" FontWeight="SemiBold" Background="#b38b60" Margin="0 350 0 0" Foreground="White" Click="LoginButton_Click"/>
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <!-- Nút thực hiện xử lý -->
+                    <Button x:Name="LoginButton" Content="Go" Width="150" Height="50" FontSize="25" FontWeight="SemiBold" 
+            Background="#b38b60" Margin="0,350,0,0" Foreground="White" Click="LoginButton_Click"/>
+
+                    <!-- Hiệu ứng vòng xoay -->
+                    <Grid Visibility="Collapsed" x:Name="Spinner" HorizontalAlignment="Center" Margin="10">
+                        <!-- Vòng xoay nền -->
+                        <Ellipse Width="50" Height="50" Stroke="LightGray" StrokeThickness="5" Opacity="0.3"/>
+
+                        <!-- Vòng xoay chính -->
+                        <Ellipse Width="50" Height="50" StrokeThickness="5">
+                            <Ellipse.Stroke>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="Blue" Offset="0.0"/>
+                                    <GradientStop Color="Transparent" Offset="1.0"/>
+                                </LinearGradientBrush>
+                            </Ellipse.Stroke>
+                            <Ellipse.RenderTransform>
+                                <RotateTransform x:Name="SpinnerTransform" CenterX="25" CenterY="25"/>
+                            </Ellipse.RenderTransform>
+                        </Ellipse>
+                    </Grid>
+                </StackPanel>
+
 
 
             </Grid>

@@ -1,0 +1,36 @@
+﻿<Window x:Class="CV_Generator.SplashScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="SplashScreen" Height="450" Width="750" WindowStyle="None" WindowStartupLocation="CenterScreen" AllowsTransparency="True" Background="#f0e2c9">
+
+    <materialDesign:Card UniformCornerRadius="15"  Margin="25">
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="350"></ColumnDefinition>
+                <ColumnDefinition Width="400"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="50 0 0 0">
+                <WrapPanel>
+                    <Image Source="./images/progress.jpg" HorizontalAlignment="Left" Height="50" Width="50"></Image>
+                    <TextBlock Text="Explode...." FontSize="28" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"></TextBlock>
+                </WrapPanel>
+
+                <TextBlock Text="Generating your CV...." FontSize="17" FontWeight="SemiBold" HorizontalAlignment="Left" Margin="0 30 0 15"></TextBlock>
+
+                <ProgressBar Name="progressBar" Value="0" Height="5" Width="280" IsIndeterminate="True"/>
+
+                <TextBlock Text="This process could last indefinitely, with no end in sight..." FontSize="10" FontWeight="Medium" HorizontalAlignment="Left" Margin="0 30 0 15"></TextBlock>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="320" Width="320">
+                <Image Source="./images/handle.png" />
+            </StackPanel>
+        </Grid>
+        
+    </materialDesign:Card>
+</Window>
