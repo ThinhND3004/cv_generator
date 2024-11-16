@@ -17,6 +17,7 @@ using Path = System.IO.Path;
 using Xceed.Words.NET;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using CV_Generator;
 namespace CV_Generater
 {
     public partial class CVTemplate1 : Window
@@ -517,7 +518,7 @@ namespace CV_Generater
 
             return layout.Margin;
         }
-        private void SavePDFDocument(PdfDocument document)
+        private async void SavePDFDocument(PdfDocument document)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
@@ -532,14 +533,13 @@ namespace CV_Generater
 
                 // Lưu tên file CV vào database
                 SaveFileToDB(filename);
-
-                MessageBox.Show("PDF generated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            HandleCloseWindow();
+            Progressing();
+            await CloseSplashAndWindowAsync();
             document.Close();
         }
 
-        private void GenerateDOCButton_Click(object sender, RoutedEventArgs e)
+        private async void GenerateDOCButton_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
@@ -629,6 +629,9 @@ namespace CV_Generater
                         }
 
 
+                        Progressing();
+
+
                         SaveFileToDB(outputPath);
 
                         // Lưu tài liệu
@@ -643,7 +646,8 @@ namespace CV_Generater
                     MessageBox.Show($"Lỗi khi tạo DOC: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
 
-                HandleCloseWindow();
+
+                await CloseSplashAndWindowAsync();
 
             }
         }
@@ -670,7 +674,27 @@ namespace CV_Generater
             return;
         }
 
-
+        private void Progressing()
+        {
+            CV_Generator.SplashScreen ss = new();
+            ss.Show();
         }
+
+        private async Task CloseSplashAndWindowAsync()
+        {
+            // Chờ một thời gian để màn hình splash hiển thị đủ lâu
+            await Task.Delay(10000); // Đợi 3 giây (hoặc có thể điều chỉnh)
+
+            // Đóng cửa sổ splash
+            var splashScreen = Application.Current.Windows.OfType<CV_Generator.SplashScreen>().FirstOrDefault();
+            splashScreen?.Close();
+
+            // Tiến hành đóng cửa sổ chính
+            HandleCloseWindow();
+        }
+    }
+
+
+        
 
 }

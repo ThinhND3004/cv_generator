@@ -12,8 +12,11 @@
     <None Remove="images\14678257.png" />
     <None Remove="images\76003-200.png" />
     <None Remove="images\close1.jpg" />
+    <None Remove="images\handle.png" />
+    <None Remove="images\handlesystem.jpg" />
     <None Remove="images\images.png" />
     <None Remove="images\minimize-icon-3.png" />
+    <None Remove="images\progress.jpg" />
     <None Remove="images\user.png" />
   </ItemGroup>
 
@@ -21,6 +24,7 @@
     <PackageReference Include="DocumentFormat.OpenXml" Version="3.1.1" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.6.1" />
     <PackageReference Include="FontAwesome.WPF" Version="4.7.0.9" />
+    <PackageReference Include="MaterialDesignThemes" Version="5.1.0" />
     <PackageReference Include="PdfSharpCore" Version="1.3.65" />
   </ItemGroup>
 
@@ -39,11 +43,20 @@
     <Resource Include="images\close1.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="images\handle.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\handlesystem.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="images\images.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="images\minimize-icon-3.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="images\progress.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <Resource Include="images\user.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
