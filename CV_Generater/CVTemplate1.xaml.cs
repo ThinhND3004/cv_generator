@@ -14,7 +14,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Path = System.IO.Path;
-
+using Xceed.Words.NET;
+using System.Windows.Media.Imaging;
+using Microsoft.Win32;
 namespace CV_Generater
 {
     public partial class CVTemplate1 : Window
@@ -24,10 +26,11 @@ namespace CV_Generater
         private const double A4_WIDTH_MM = 210;
         private const double A4_HEIGHT_MM = 297;
         private const double MM_TO_POINT = 2.83465;
-
+        private string imagePath;
         public CVTemplate1()
         {
             InitializeComponent();
+            imagePath = string.Empty;
         }
 
         // Xử lý sự kiện click để upload ảnh
@@ -40,6 +43,8 @@ namespace CV_Generater
 
             if (openFileDialog.ShowDialog() == true)
             {
+                imagePath = openFileDialog.FileName;
+
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.UriSource = new Uri(openFileDialog.FileName);
@@ -537,5 +542,110 @@ namespace CV_Generater
 
             document.Close();
         }
-    }
+
+        private void GenerateDOCButton_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = "Word Documents (*.docx)|*.docx", // Chỉ định loại file
+                DefaultExt = "docx", // Định dạng mặc định
+                FileName = "CV" // Tên file mặc định
+            };
+
+            // Hiển thị hộp thoại và kiểm tra xem người dùng có chọn file không
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                //string templateFileName = "Template.docx"; // Tên file template
+                string templatePath = @"D:\GitHubSWP\cv_generator\Template.docx";
+
+                // Kiểm tra xem template có tồn tại không
+                if (!File.Exists(templatePath))
+                {
+                    MessageBox.Show("Template file không tồn tại!", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                string outputPath = saveFileDialog.FileName;
+
+                try
+                {
+                    using (var document = DocX.Load(templatePath))
+                    {
+
+                        // Kiểm tra giá trị từ TextBox
+                        string fullName = FullNameTextBox.Text;
+                        string position = PositionTextBox.Text;
+                        string email = EmailTextBox.Text;
+                        string phone = PhoneTextBox.Text;
+                        string address = AddressTextBox.Text;
+                        string overview = OverViewTextBox.Text;
+                     
+                        string workDay = SoftSkillsDetailTextBox.Text;
+                        string company = CompanyNameTextBox.Text;
+                        string jobDes = JobDescriptionTextBox.Text;
+                        string eduDay = EducationExpDateTextBox.Text;
+                        string schoolName = SchoolNameTextBox.Text;
+                        string eduDes = EduDescriptionTextBox.Text;
+                        string technicalSkills = TechnicalSkillsTextBox.Text;
+                        string skillDetail = TechnicalSkillsDetailTextBox.Text;
+                        string softSkill = SoftSkillsTextBox.Text;
+                        string softSkillDetail = SoftSkillsDetailTextBox.Text;
+
+                        // Thay thế các placeholder
+                        document.ReplaceText("{FullName}", fullName);
+                        document.ReplaceText("{Position}", position);
+                        document.ReplaceText("{Email}", email);
+                        document.ReplaceText("{Phone}", phone);
+                        document.ReplaceText("{Address}", address);
+                        document.ReplaceText("{schoolName}", schoolName);
+                        document.ReplaceText("{Overview}", overview);
+                        document.ReplaceText("{workDay}", workDay);
+                        document.ReplaceText("{company}", company);
+                        document.ReplaceText("{jobDes}", jobDes);
+                        document.ReplaceText("{eduDay}", eduDay);
+                        document.ReplaceText("{eduDes}", eduDes);
+                        document.ReplaceText("{technicalSkills}", technicalSkills);
+
+                        document.ReplaceText("{skillDetail}", skillDetail);
+                        document.ReplaceText("{softSkill}", softSkill);
+                        document.ReplaceText("{softSkillDetail}", softSkillDetail);
+                        if (!string.IsNullOrEmpty(imagePath)) // Kiểm tra nếu đã chọn ảnh
+                        {
+                            // Tạo hình ảnh từ đường dẫn đã chọn
+                            var img = document.AddImage(imagePath);
+                            var picture = img.CreatePicture();
+
+                            // Đặt kích thước cho hình ảnh
+                            picture.Width = 200;  // Đặt chiều rộng
+                            picture.Height = 200; // Đặt chiều cao
+
+                            // Tìm vị trí `{ProfileImage}` trong tài liệu
+                            var paragraphs = document.Paragraphs; // Lấy danh sách các đoạn văn
+                            foreach (var paragraph in paragraphs)
+                            {
+                                if (paragraph.Text.Contains("{ProfileImage}"))
+                                {
+                                    // Chèn ảnh vào đoạn văn và xóa placeholder
+                                    paragraph.AppendPicture(picture);
+                                    paragraph.ReplaceText("{ProfileImage}", ""); // Xóa placeholder
+                                    break; // Thoát khỏi vòng lặp sau khi tìm thấy
+                                }
+                            }
+                        }
+
+                        // Lưu tài liệu
+                        document.SaveAs(outputPath);
+                    }
+
+                    MessageBox.Show($"Tài liệu đã được tạo thành công tại {outputPath}!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi tạo DOC: {ex.Message}", "Lỗi", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+            }
+        }
+
+        }
+
 }

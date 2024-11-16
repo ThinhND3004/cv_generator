@@ -138,19 +138,11 @@
                             <TextBox Name="SoftSkillsDetailTextBox" Visibility="Collapsed" FontSize="12" Margin="0,0,0,5" TextWrapping="Wrap" Tag="{Binding ElementName=SoftSkillsDetailTextBlock}" LostFocus="TextBox_LostFocus" AcceptsReturn="True"/>
                         </StackPanel>
                     </Grid>
-
-
-
-                    
-
                 </StackPanel>
-                
-                
-
 
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" Margin="0 50 10 0">
                     <Button x:Name="GeneratePDFButton" Content="Generate to PDF" Width="120" Margin="0 0 10 0" Click="GeneratePDFButton_Click" />
-                    <Button x:Name="GenerateDOCButton" Content="Generate to Docs" Width="120"/>
+                    <Button x:Name="GenerateDOCButton" Content="Generate to Docs" Width="120" Click="GenerateDOCButton_Click" />
                 </StackPanel>
             </StackPanel>
 
